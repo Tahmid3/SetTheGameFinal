@@ -4,8 +4,11 @@ import Code.Card;
 import Code.Clock;
 import Code.Game;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -29,22 +32,24 @@ import javax.imageio.ImageIO;
 
 public class GamePanel {
 
-    Game g = new Game();
+    Game g = new Game(); // Neues Spiel wird und g gespeichert und im Verlauf der Klasse mehrmals genutzt
 
-    HashMap<ImageView, Card> clickedSet = new HashMap<>(); //Karten, die derzeit angeklickt sind
-    HashMap<ImageView, Card> cardDeck = new HashMap<>(); //Aktuell aufgelegtes Kartendeck
-    LinkedList<ImageView> imageViews = new LinkedList<>(); //Lediglich die angeklickten Karten
-    int i = 0;
-    int foundSets = 0;
-
-    @FXML
-    AnchorPane window;
+    HashMap<ImageView, Card> clickedSet = new HashMap<>(); //Karten mit den dazugehörigen Views, die angeklickt sind
+    HashMap<ImageView, Card> cardDeck = new HashMap<>(); //Aktuell aufgelegtes Kartendeck als Map
+    LinkedList<ImageView> imageViews = new LinkedList<>(); //Alle Views, die bereits angeklickt sind
+    int i = 0; //Integer - zu den angeklicken Karten
+    int foundSets = 0; // Integer für die gefundenen Sets
 
     @FXML
-    Pane sideMenu;
+    AnchorPane window; // Deklaration des gesamten Fensters
 
     @FXML
-    TextField field;
+    Pane sideMenu; // Deklaration des Seiten Menüs
+
+    @FXML
+    TextField field; //Deklaration des Textfeldes für die Namenseingabe
+
+    //Folgend kommt die Deklaration der ImageViews
 
     @FXML
     ImageView i1;
@@ -83,90 +88,127 @@ public class GamePanel {
     ImageView i12;
 
     @FXML
-    Label l;
+    Label l; // Deklaration des Überschrift
 
     @FXML
-    Label foundSetsLabel;
+    Label foundSetsLabel; //Deklaration des Labels für gefundene Sets
 
     @FXML
-    Label possibleSetsLabel;
+    Label possibleSetsLabel; // Deklaration des Labels für die möglichen Sets
 
     @FXML
-    Label cardsRemainingLabel;
+    Label cardsRemainingLabel; // Deklaration des Labels für die remaining cards
 
     @FXML
-    Label timeLabel;
+    Label timeLabel; // Deklaration des Labels für die Zeit
 
     @FXML
-    Label console;
+    Label console; // Deklaration des Labels für die Konsole
 
     @FXML
-    Label nameLabel;
+    Label nameLabel; // Deklaration des Labels für den eingegebenen Namen
 
     @FXML
-    Button check;
+    Button check; // SKIP - Button im Spiel
 
     @FXML
-    Button start;
+    Button start; // START - Button im Spiel
 
     @FXML
-    Button menuButton;
+    Button menuButton; // Back to Menu - Button im Spiel
 
 
 
 
-    public void onClick(Event event) throws IOException {
-        System.out.println(g.getGameDeck().toString());
-        ImageView view = (ImageView) event.getSource();
-        if (clickedSet.keySet().contains(view)) {
-            view.setEffect(cardShadow());
-            clickedSet.remove(view);
-            imageViews.remove(view);
-            i--;
-        } else {
-            clickedSet.put(view, cardDeck.get(view));
-            imageViews.add(view);
-            i++;
-            view.setEffect(setMarkedCard());
-            if (i == 3) {
-                ImageView image1 = imageViews.get(0);
-                ImageView image2 = imageViews.get(1);
-                ImageView image3 = imageViews.get(2);
+    public void onClick(Event event) throws IOException { // Die Methode wird immer dann aufgerufen, wenn eine Karte angeklickt wird
+        if(g.isClickable()) { //Wenn die Karte anclickbar ist (Sie ist nur dann anklickbar, während der 2,5 Sekunden in denen ein Beispielset angezeigt wird
+            ImageView view = (ImageView) event.getSource(); //Das angeklickte "Bild" wird sich über das event geholt
+            if (clickedSet.keySet().contains(view)) { //Wenn die Map, in der nur die aktuell angeklickten Karten - mit ihren dazugehörigen Images - drin sind, die aktuell angeklickte Karte bereits enthält...
+                view.setEffect(cardShadow()); //Wird die Karte entwählt...also der Schatten wird zurückgesetzt
+                clickedSet.remove(view); //Die Karte wird aus set mit den aktuell angeklickten Karten entfernt
+                imageViews.remove(view);
+                i--; //Die angeklickte Anzahl der Karten wird um 1 nach unten gesetzt
+            } else { //sonst (also wenn die Karte noch nicht in dem Set ist)
+                clickedSet.put(view, cardDeck.get(view)); //
+                imageViews.add(view); //
+                i++; //Zählvar. um 1 nach oben
+                view.setEffect(setMarkedCard()); //Effekt der Makierten Karte wird gesetzt
+                if (i == 3) { // Wenn 3 Karten ausgewählt sind...
+                    ImageView image1 = imageViews.get(0); // Die ausgewählten Images werden unter den Variabelen image1,image2 und image3 gespeichert
+                    ImageView image2 = imageViews.get(1);
+                    ImageView image3 = imageViews.get(2);
 
 
-                if (g.checkSet(clickedSet.get(image1), clickedSet.get(image2), clickedSet.get(image3))) {
-                    g.removeCardFromGameDeck(clickedSet.get(image1));
-                    g.removeCardFromGameDeck(clickedSet.get(image2));
-                    g.removeCardFromGameDeck(clickedSet.get(image3));
-                    Card c1 = g.getRemainingCards().get(0);
-                    Card c2 = g.getRemainingCards().get(1);
-                    Card c3 = g.getRemainingCards().get(2);
-                    image1.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c1.toString() + ".png")), null));
-                    image2.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c2.toString() + ".png")), null));
-                    image3.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c3.toString() + ".png")), null));
-                    cardDeck.put(image1, c1);
-                    cardDeck.put(image2, c2);
-                    cardDeck.put(image3, c3);
-                    g.addCardToGameDeck(c1);
-                    g.addCardToGameDeck(c2);
-                    g.addCardToGameDeck(c3);
-                    g.removeCardFromRemainingCards(c1);
-                    g.removeCardFromRemainingCards(c2);
-                    g.removeCardFromRemainingCards(c3);
-                    foundSets++;
-                    foundSetsLabel.setText(foundSets + "");
-                    possibleSetsLabel.setText(g.getPossibleSets() + "");
-                    cardsRemainingLabel.setText(g.getRemainingCards().size() + "");
+                    if (g.checkSet(clickedSet.get(image1), clickedSet.get(image2), clickedSet.get(image3))) { // Wenn die ausgewählten Karten ein Set sind...
+                        g.removeCardFromGameDeck(clickedSet.get(image1)); // Karten werden aus dem Spieldeck entfernt
+                        g.removeCardFromGameDeck(clickedSet.get(image2));
+                        g.removeCardFromGameDeck(clickedSet.get(image3));
+                        foundSets++; // Gefundene Sets um 1 nach oben
+                        if (g.getRemainingCards().size() < 12) { // Noch in Arbeit
+                            System.out.println("Spiel beendet");
+                        }
+                        Card c1 = g.getRemainingCards().get(0); // Es werden duch c1,c2,c3 3 neue Karten vom "Stapel" abgehoben
+                        Card c2 = g.getRemainingCards().get(1);
+                        Card c3 = g.getRemainingCards().get(2);
+                        image1.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c1.toString() + ".png")), null)); // Diese Karten werde über den Befehl angezeigt
+                        image2.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c2.toString() + ".png")), null));
+                        image3.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c3.toString() + ".png")), null));
+                        cardDeck.remove(image1); // Die 3 Katen, welche ein Set ergeben werden vom Spielfeld entfernt (bzw. aus der Map cardDeck
+                        cardDeck.remove(image2);
+                        cardDeck.remove(image3);
+                        cardDeck.put(image1, c1); // Die neuen Karten werden dem Image Views zugewiesen und damit in die Map aufgenommen
+                        cardDeck.put(image2, c2);
+                        cardDeck.put(image3, c3);
+                        g.addCardToGameDeck(c1); // Die Karten werden auch in der externen Liste in Spieldeck aufgenommen
+                        g.addCardToGameDeck(c2);
+                        g.addCardToGameDeck(c3);
+                        g.removeCardFromRemainingCards(c1); // Die neu hinzugefügten Karten werden vom "Stapel" gelöscht
+                        g.removeCardFromRemainingCards(c2);
+                        g.removeCardFromRemainingCards(c3);
+                        foundSetsLabel.setText(foundSets + ""); //Found Sets wird gepudatet
+                        possibleSetsLabel.setText(g.getPossibleSets() + ""); // Possibe Sets wird gepudatet
+                        cardsRemainingLabel.setText(g.getRemainingCards().size() + ""); // Remainig Cards wird gepudatet
+                    }
+                    setCardShadow(image1, image2, image3); // Kartenschatten wird auf allen 3 Images wieder zurückgesetzt
+                    clickedSet.clear(); // clickedSet wird gecleared
+                    imageViews.clear(); // Image Views werden geleared
+                    i = 0; // Ausgewählten Karten werden auf 0 zurückgesetzt
                 }
-                setCardShadow(image1, image2, image3);
-                clickedSet.clear();
-                imageViews.clear();
-                i = 0;
-                System.out.println(g.getGameDeck().toString());
             }
         }
+    }
 
+    public void onClickCheck(Event event) {
+        for(ImageView view : cardDeck.keySet()) {
+                for(int i=0;i<3;i++) {
+                    if(cardDeck.get(view).toString().equals(g.getExampleSet().get(i).toString())) {
+                        view.setEffect(exampleCardEffect());
+                    }
+                }
+            }
+        g.setClickable(false);
 
+        Task<Void> sleeper = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    Thread.sleep(2500);
+                } catch(InterruptedException ex) {
+                }
+                return null;
+            }
+        };
+        sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent workerStateEvent) {
+                for(ImageView view : cardDeck.keySet()) {
+                    view.setEffect(cardShadow());
+                }
+                g.getExampleSet().clear();
+                g.setClickable(true);
+            }
+        });
+        new Thread(sleeper).start();
     }
 
     public void onClickBackToMenu() throws Exception {
@@ -227,7 +269,16 @@ public class GamePanel {
         borderGlow.setWidth(30);
         borderGlow.setHeight(30);
         return borderGlow;
+    }
 
+    public Effect exampleCardEffect() {
+        DropShadow borderGlow = new DropShadow();
+        borderGlow.setOffsetY(0f);
+        borderGlow.setOffsetX(0f);
+        borderGlow.setColor(Color.DARKRED);
+        borderGlow.setWidth(30);
+        borderGlow.setHeight(30);
+        return borderGlow;
     }
 
     public void setCardShadow(ImageView i1, ImageView i2, ImageView i3) {
@@ -239,7 +290,7 @@ public class GamePanel {
         i3.setEffect(cardShadow());
     }
 
-    public HashMap<ImageView, Card> createCardDeckMap() {
+    private HashMap<ImageView, Card> createCardDeckMap() {
         cardDeck.put(i1, null);
         cardDeck.put(i2, null);
         cardDeck.put(i3, null);

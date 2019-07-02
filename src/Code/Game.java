@@ -5,11 +5,11 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class Game {
-    private LinkedList<Card> remainingCards = new LinkedList<>();
-    private LinkedList<Card> gameDeck = new LinkedList<>();
-    private LinkedList<Card> virtualLinkedList = new LinkedList<>();
-    private LinkedList<Card> foundSet = new LinkedList<>();
+    private LinkedList<Card> remainingCards = new LinkedList<>(); //ALle noch nicht benutzen Karten
+    private LinkedList<Card> gameDeck = new LinkedList<>(); //Aktuell aufgelegtes Kartenspiel
+    private LinkedList<Card> exampleSet = new LinkedList<>(); //Beispielset
 
+    private boolean cardsClickable = true;
 
     public void createDeck() {
         LinkedList<Card> remainingCards = new LinkedList<>();
@@ -25,6 +25,10 @@ public class Game {
         this.remainingCards=remainingCards;
     }
 
+    public LinkedList<Card> getExampleSet() {
+        return exampleSet;
+    }
+
     public void mixCards() {
         Collections.shuffle(remainingCards);
     }
@@ -36,8 +40,6 @@ public class Game {
     public LinkedList<Card> getGameDeck() {
         return gameDeck;
     }
-
-    public LinkedList<Card> getFoundSet() { return foundSet; }
 
     public void addCardToGameDeck(Card c) {
         gameDeck.add(c);
@@ -51,8 +53,15 @@ public class Game {
         gameDeck.remove(c);
     }
 
+    public boolean isClickable() { return cardsClickable; }
+
+    public void setClickable(boolean clickable) {
+        this.cardsClickable=clickable;
+    }
+
     public int getPossibleSets() {
         HashSet<Integer> set = new HashSet<>();
+        LinkedList<Card> exampleSet = new LinkedList<>(); //Nur lokale Liste, in welche nacheinander alle Karten reingespeichert werden die ein Set bilden könnten
         for (int a = 0; a < gameDeck.size(); a++) {
             for (int b = 0; b < gameDeck.size(); b++) {
                 for (int c = 0; c < gameDeck.size(); c++) {
@@ -60,27 +69,48 @@ public class Game {
                         if (numberIsTheSame(a, b, c)) {
                             if (symbolIsTheSame(a, b, c)) {
                                 if (formIsNotTheSame(a, b, c)) {
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
                                     set.add(1);
                                 }
                             } else if (symbolIsNotTheSame(a, b, c)) {
                                 if (formIsTheSame(a, b, c)) {
                                     set.add(2);
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
                                 } else if (formIsNotTheSame(a, b, c)) {
                                     set.add(3);
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
                                 }
                             }
                         } else if (numberIsNotTheSame(a, b, c)) {
                             if (symbolIsTheSame(a, b, c)) {
                                 if (formIsTheSame(a, b, c)) {
                                     set.add(4);
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
                                 } else if (formIsNotTheSame(a, b, c)) {
                                     set.add(5);
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
                                 }
                             } else if (symbolIsNotTheSame(a, b, c)) {
                                 if (formIsTheSame(a, b, c)) {
                                     set.add(6);
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
                                 } else if (formIsNotTheSame(a, b, c)) {
                                     set.add(7);
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
 
                                 }
                             }
@@ -91,33 +121,52 @@ public class Game {
                             if (symbolIsTheSame(a, b, c)) {
                                 if (formIsTheSame(a, b, c)) {
                                     set.add(8);
-
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
                                 } else if (formIsNotTheSame(a, b, c)) {
                                     set.add(9);
-
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
                                 }
                             } else if (symbolIsNotTheSame(a, b, c)) {
                                 if (formIsTheSame(a, b, c)) {
                                     set.add(10);
-
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
                                 } else if (formIsNotTheSame(a, b, c)) {
                                     set.add(11);
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
                                 }
                             }
                         } else if (numberIsNotTheSame(a, b, c)) {
                             if (symbolIsTheSame(a, b, c)) {
                                 if (formIsTheSame(a, b, c)) {
                                     set.add(12);
-
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
                                 } else if (formIsNotTheSame(a, b, c)) {
                                     set.add(13);
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
                                 }
                             } else if (symbolIsNotTheSame(a, b, c)) {
                                 if (formIsTheSame(a, b, c)) {
                                     set.add(14);
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
                                 } else if (formIsNotTheSame(a, b, c)) {
                                     set.add(15);
-
+                                    exampleSet.add(gameDeck.get(a));
+                                    exampleSet.add(gameDeck.get(b));
+                                    exampleSet.add(gameDeck.get(c));
                                 }
                             }
                         }
@@ -125,6 +174,9 @@ public class Game {
                 }
             }
         }
+        this.exampleSet.add(exampleSet.get(0));
+        this.exampleSet.add(exampleSet.get(1));
+        this.exampleSet.add(exampleSet.get(2));
         return set.size();
 
     }
@@ -200,20 +252,6 @@ public class Game {
             return true;
         }
         return false;
-    }
-
-
-
-    public void foundSet(int a, int b, int c) {
-        foundSet.add(gameDeck.get(a));
-        foundSet.add(gameDeck.get(b));
-        foundSet.add(gameDeck.get(c));
-        Card c1 = gameDeck.get(a);
-        Card c2 = gameDeck.get(b);
-        Card c3 = gameDeck.get(c);
-        gameDeck.remove(c1);
-        gameDeck.remove(c2);
-        gameDeck.remove(c3);
     }
 
 

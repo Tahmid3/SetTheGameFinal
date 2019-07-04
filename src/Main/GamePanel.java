@@ -24,18 +24,15 @@ import javafx.scene.paint.Color;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import javax.imageio.ImageIO;
 
 public class GamePanel {
 
     Game g = new Game(); // Neues Spiel wird und g gespeichert und im Verlauf der Klasse mehrmals genutzt
 
-    HashMap<ImageView, Card> clickedSet = new HashMap<>(); //Karten mit den dazugehörigen Views, die angeklickt sind
-    HashMap<ImageView, Card> cardDeck = new HashMap<>(); //Aktuell aufgelegtes Kartendeck als Map
+    LinkedHashMap<ImageView, Card> clickedSet = new LinkedHashMap<>(); //Karten mit den dazugehörigen Views, die angeklickt sind
+    LinkedHashMap<ImageView, Card> cardDeck = new LinkedHashMap<>(); //Aktuell aufgelegtes Kartendeck als Map
     LinkedList<ImageView> imageViews = new LinkedList<>(); //Alle Views, die bereits angeklickt sind
     int i = 0; //Integer - zu den angeklicken Karten
     int foundSets = 0; // Integer für die gefundenen Sets
@@ -109,13 +106,13 @@ public class GamePanel {
     Label nameLabel; // Deklaration des Labels für den eingegebenen Namen
 
     @FXML
-    Button check; // SKIP - Button im Spiel
+    Button skip; // SKIP - Button im Spiel
 
     @FXML
     Button start; // START - Button im Spiel
 
     @FXML
-    Button menuButton; // Back to Menu - Button im Spiel
+    Button menuButton; // Back to Menu - Button im Spiel#
 
 
 
@@ -188,6 +185,7 @@ public class GamePanel {
                                 g.removeCardFromRemainingCards(c3);
                                 foundSetsLabel.setText(foundSets + ""); //Found Sets wird gepudatet
                                 possibleSetsLabel.setText(g.getPossibleSets() + ""); // Possibe Sets wird gepudatet
+                                g.getExampleSet().clear();
                                 cardsRemainingLabel.setText(g.getRemainingCards().size() + ""); // Remainig Cards wird gepudatet
                                 setCardShadow(image1, image2, image3); // Kartenschatten wird auf allen 3 Images wieder zurückgesetzt
                                 clickedSet.clear(); // clickedSet wird gecleared
@@ -209,7 +207,8 @@ public class GamePanel {
         }
     }
 
-    public void onClickCheck(Event event) throws IOException{
+    public void onCLickSkip(Event event) throws IOException{
+        g.getPossibleSets();
         for(ImageView view : cardDeck.keySet()) {
                 for(int i=0;i<3;i++) {
                     if(cardDeck.get(view).toString().equals(g.getExampleSet().get(i).toString())) {
@@ -235,7 +234,6 @@ public class GamePanel {
                 for(ImageView view : cardDeck.keySet()) {
                     view.setEffect(cardShadow());
                 }
-                g.getExampleSet().clear();
                 g.getGameDeck().clear();
                 g.setClickable(true);
                 try{
@@ -243,10 +241,11 @@ public class GamePanel {
                 } catch (Exception ex) {
 
                 }
+                g.getExampleSet().clear();
                 foundSetsLabel.setText(foundSets + ""); //Found Sets wird gepudatet
                 possibleSetsLabel.setText(g.getPossibleSets() + ""); // Possibe Sets wird gepudatet
+                g.getExampleSet().clear();
                 cardsRemainingLabel.setText(g.getRemainingCards().size() + ""); // Remainig Cards wird gepudatet
-
             }
         });
         new Thread(sleeper).start();
@@ -286,19 +285,25 @@ public class GamePanel {
             g.createDeck();
             g.mixCards();
             createCardDeckMap();
-            for (ImageView imageView : cardDeck.keySet()) {
-                Card c = g.getRemainingCards().get(counter);
-                imageView.setEffect(cardShadow());
+            for (int i=0; i<12;i++) {
+                Card c = g.getRemainingCards().get(i);
                 g.addCardToGameDeck(c);
+                g.removeCardFromRemainingCards(c);
+            }
+            g.sortList(g.getGameDeck());
+            for (ImageView imageView : cardDeck.keySet()) {
+                Card c = g.getGameDeck().get(counter);
+                imageView.setEffect(cardShadow());
                 cardDeck.put(imageView, c);
                 imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c.toString() + ".png")), null));
-                g.removeCardFromRemainingCards(c);
                 counter++;
+            }
+            if(g.getPossibleSets()==0) {
 
             }
             setLabels();
             sideMenu.setVisible(true);
-            check.setVisible(true);
+            skip.setVisible(true);
             field.setVisible(false);
             start.setVisible(false);
             System.out.println(g.getGameDeck().toString());
@@ -345,7 +350,7 @@ public class GamePanel {
         i3.setEffect(cardShadow());
     }
 
-    private HashMap<ImageView, Card> createCardDeckMap() {
+    private LinkedHashMap<ImageView, Card> createCardDeckMap() {
         cardDeck.put(i1, null);
         cardDeck.put(i2, null);
         cardDeck.put(i3, null);
@@ -364,7 +369,9 @@ public class GamePanel {
     public void setLabels() {
         Timer timer = new Timer();
         Clock c = new Clock();
+        timeLabel.setText("00:00:00");
         timer.scheduleAtFixedRate(new TimerTask() {
+
             @Override
             public void run() {
                 Platform.runLater(() -> {
@@ -376,6 +383,7 @@ public class GamePanel {
         foundSetsLabel.setText("0");
         cardsRemainingLabel.setText(g.getRemainingCards().size() + "");
         possibleSetsLabel.setText("" + g.getPossibleSets());
+        g.getExampleSet().clear();
     }
 
     public void dragOverEffect(Event event) {

@@ -101,7 +101,7 @@
                <font>
                   <Font size="13.0" />
                </font></TextField>
-            <Button fx:id="check" alignment="CENTER" contentDisplay="CENTER" layoutX="63.0" layoutY="747.0" mnemonicParsing="false" onAction="#onClickCheck" prefHeight="65.0" prefWidth="150.0" style="-fx-background-color: #35374C; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4;" text="SKIP" textFill="WHITE" visible="false">
+            <Button fx:id="skip" alignment="CENTER" contentDisplay="CENTER" layoutX="63.0" layoutY="747.0" mnemonicParsing="false" onAction="#onCLickSkip" prefHeight="65.0" prefWidth="150.0" style="-fx-background-color: #35374C; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4;" text="SKIP" textFill="WHITE" visible="false">
                <font>
                   <Font size="27.0" />
                </font>

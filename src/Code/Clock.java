@@ -50,4 +50,26 @@ public class Clock {
             }
             return this.toString();
         }
+
+        public String timer(String minutes) {
+            char[] stringToCharArray = minutes.toCharArray();
+            int min2 = Character.getNumericValue(stringToCharArray[0]);
+            int min1 = Character.getNumericValue(stringToCharArray[0]);
+            this.minute2=min2;
+            this.minute1=min1;
+            second2--;
+            if(second2<1) {
+                second1--;
+                second2=10;
+                if(second1==0) {
+                    minute2--;
+                    second1=10;
+                    if(minute2==0) {
+                        minute1--;
+                        minute2=10;
+                    }
+                }
+            }
+            return "";
+        }
 }

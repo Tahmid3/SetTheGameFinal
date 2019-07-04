@@ -1,6 +1,6 @@
 package Code;
 
-public class Card {
+public class Card implements Comparable<Card> {
 
     private int color;
     private int number;
@@ -34,6 +34,18 @@ public class Card {
 
     public int getForm() {
         return form;
+    }
+
+    @Override
+    public int compareTo(Card c) {
+        int no1 = Integer.parseInt(c.toString());
+        int no2 = Integer.parseInt(this.toString());
+        if(no1==no2)
+            return 0;
+        else if(no1<no2)
+            return 1;
+        else
+            return -1;
     }
 
 

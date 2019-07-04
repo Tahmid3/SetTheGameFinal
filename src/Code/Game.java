@@ -181,6 +181,10 @@ public class Game {
 
     }
 
+    public void sortList(LinkedList<Card> list) {
+        Collections.sort(list);
+    }
+
     public boolean checkSet(Card c1, Card c2, Card c3) {
         char[] c1Array = c1.toString().toCharArray();
         char[] c2Array = c2.toString().toCharArray();

@@ -18,8 +18,14 @@ public class Clock {
         String s5 = String.valueOf(second1);
         String s6 = String.valueOf(second2);
         return s1 + s2 + ":" + s3 + s4 + ":" + s5 + s6;
+    }
 
+    public void setMinute2(int i) {
+        minute2=i;
+    }
 
+    public void setMinute1(int i) {
+        minute1=i;
     }
 
     public String start() {
@@ -52,24 +58,22 @@ public class Clock {
         }
 
         public String timer(String minutes) {
-            char[] stringToCharArray = minutes.toCharArray();
-            int min2 = Character.getNumericValue(stringToCharArray[0]);
-            int min1 = Character.getNumericValue(stringToCharArray[0]);
-            this.minute2=min2;
-            this.minute1=min1;
+        if(second2==0&&second1==0&&minute1==0&&minute2==0) {
+            return "00:00:00";
+        }
             second2--;
-            if(second2<1) {
+            if(second2<0) {
                 second1--;
-                second2=10;
-                if(second1==0) {
+                second2=9;
+                if(second1<0) {
                     minute2--;
-                    second1=10;
-                    if(minute2==0) {
+                    second1=5;
+                    if(minute2<0) {
                         minute1--;
-                        minute2=10;
+                        minute2=9;
                     }
                 }
             }
-            return "";
+            return this.toString();
         }
 }

@@ -36,6 +36,7 @@ public class GamePanel {
     LinkedList<ImageView> imageViews = new LinkedList<>(); //Alle Views, die bereits angeklickt sind
     int i = 0; //Integer - zu den angeklicken Karten
     int foundSets = 0; // Integer für die gefundenen Sets
+    boolean sorted = true;
 
     @FXML
     AnchorPane window; // Deklaration des gesamten Fensters
@@ -153,45 +154,9 @@ public class GamePanel {
                         @Override
                         public void handle(WorkerStateEvent workerStateEvent) {
                             if (g.checkSet(clickedSet.get(image1), clickedSet.get(image2), clickedSet.get(image3))) { // Wenn die ausgewählten Karten ein Set sind...
-                                g.removeCardFromGameDeck(clickedSet.get(image1)); // Karten werden aus dem Spieldeck entfernt
-                                g.removeCardFromGameDeck(clickedSet.get(image2));
-                                g.removeCardFromGameDeck(clickedSet.get(image3));
+                                setThreeNewCards(image1,image2,image3);
                                 foundSets++; // Gefundene Sets um 1 nach oben
-                                if (g.getRemainingCards().size() < 12) { // Noch in Arbeit
-                                    System.out.println("Spiel beendet");
-                                }
-                                Card c1 = g.getRemainingCards().get(0); // Es werden duch c1,c2,c3 3 neue Karten vom "Stapel" abgehoben
-                                Card c2 = g.getRemainingCards().get(1);
-                                Card c3 = g.getRemainingCards().get(2);
-                                try{
-                                    image1.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c1.toString() + ".png")), null)); // Diese Karten werde über den Befehl angezeigt
-                                    image2.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c2.toString() + ".png")), null));
-                                    image3.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c3.toString() + ".png")), null));
-                                } catch (IOException ex) {
-
-                                }
-
-                                cardDeck.remove(image1); // Die 3 Katen, welche ein Set ergeben werden vom Spielfeld entfernt (bzw. aus der Map cardDeck
-                                cardDeck.remove(image2);
-                                cardDeck.remove(image3);
-                                cardDeck.put(image1, c1); // Die neuen Karten werden dem Image Views zugewiesen und damit in die Map aufgenommen
-                                cardDeck.put(image2, c2);
-                                cardDeck.put(image3, c3);
-                                g.addCardToGameDeck(c1); // Die Karten werden auch in der externen Liste in Spieldeck aufgenommen
-                                g.addCardToGameDeck(c2);
-                                g.addCardToGameDeck(c3);
-                                g.removeCardFromRemainingCards(c1); // Die neu hinzugefügten Karten werden vom "Stapel" gelöscht
-                                g.removeCardFromRemainingCards(c2);
-                                g.removeCardFromRemainingCards(c3);
-                                foundSetsLabel.setText(foundSets + ""); //Found Sets wird gepudatet
-                                possibleSetsLabel.setText(g.getPossibleSets() + ""); // Possibe Sets wird gepudatet
-                                g.getExampleSet().clear();
-                                cardsRemainingLabel.setText(g.getRemainingCards().size() + ""); // Remainig Cards wird gepudatet
-                                setCardShadow(image1, image2, image3); // Kartenschatten wird auf allen 3 Images wieder zurückgesetzt
-                                clickedSet.clear(); // clickedSet wird gecleared
-                                imageViews.clear(); // Image Views werden geleared
-                                i = 0; // Ausgewählten Karten werden auf 0 zurückgesetzt
-                                g.setClickable(true);
+                                foundSetsLabel.setText("" + foundSets);
                             } else {
                                 setCardShadow(image1, image2, image3); // Kartenschatten wird auf allen 3 Images wieder zurückgesetzt
                                 clickedSet.clear(); // clickedSet wird gecleared
@@ -207,15 +172,18 @@ public class GamePanel {
         }
     }
 
-    public void onCLickSkip(Event event) throws IOException{
+    public void onCLickSkip(Event event) throws IOException{ //Fehler mit der helpList
+        LinkedList<ImageView> helpList = new LinkedList<>();
         g.getPossibleSets();
         for(ImageView view : cardDeck.keySet()) {
                 for(int i=0;i<3;i++) {
                     if(cardDeck.get(view).toString().equals(g.getExampleSet().get(i).toString())) {
                         view.setEffect(exampleCardEffect());
+                        helpList.add(view);
                     }
                 }
             }
+        g.getExampleSet().clear();
         g.setClickable(false);
 
         Task<Void> sleeper = new Task<Void>() {
@@ -224,6 +192,7 @@ public class GamePanel {
                 try {
                     Thread.sleep(2500);
                 } catch(InterruptedException ex) {
+
                 }
                 return null;
             }
@@ -234,18 +203,11 @@ public class GamePanel {
                 for(ImageView view : cardDeck.keySet()) {
                     view.setEffect(cardShadow());
                 }
-                g.getGameDeck().clear();
+                ImageView v1 = helpList.get(0);
+                ImageView v2 = helpList.get(1);
+                ImageView v3 = helpList.get(2);
                 g.setClickable(true);
-                try{
-                    refreshGamePanel();
-                } catch (Exception ex) {
-
-                }
-                g.getExampleSet().clear();
-                foundSetsLabel.setText(foundSets + ""); //Found Sets wird gepudatet
-                possibleSetsLabel.setText(g.getPossibleSets() + ""); // Possibe Sets wird gepudatet
-                g.getExampleSet().clear();
-                cardsRemainingLabel.setText(g.getRemainingCards().size() + ""); // Remainig Cards wird gepudatet
+                setThreeNewCards(v1,v2,v3);
             }
         });
         new Thread(sleeper).start();
@@ -312,6 +274,43 @@ public class GamePanel {
 
     }
 
+    public void setThreeNewCards(ImageView image1, ImageView image2, ImageView image3) {
+            g.removeCardFromGameDeck(clickedSet.get(image1)); // Karten werden aus dem Spieldeck entfernt
+            g.removeCardFromGameDeck(clickedSet.get(image2));
+            g.removeCardFromGameDeck(clickedSet.get(image3));
+            Card c1 = g.getRemainingCards().get(0); // Es werden duch c1,c2,c3 3 neue Karten vom "Stapel" abgehoben
+            Card c2 = g.getRemainingCards().get(1);
+            Card c3 = g.getRemainingCards().get(2);
+            try{
+                image1.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c1.toString() + ".png")), null)); // Diese Karten werde über den Befehl angezeigt
+                image2.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c2.toString() + ".png")), null));
+                image3.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c3.toString() + ".png")), null));
+            } catch (IOException ex) {
+
+            }
+
+            cardDeck.remove(image1); // Die 3 Katen, welche ein Set ergeben werden vom Spielfeld entfernt (bzw. aus der Map cardDeck
+            cardDeck.remove(image2);
+            cardDeck.remove(image3);
+            cardDeck.put(image1, c1); // Die neuen Karten werden dem Image Views zugewiesen und damit in die Map aufgenommen
+            cardDeck.put(image2, c2);
+            cardDeck.put(image3, c3);
+            g.addCardToGameDeck(c1); // Die Karten werden auch in der externen Liste in Spieldeck aufgenommen
+            g.addCardToGameDeck(c2);
+            g.addCardToGameDeck(c3);
+            g.removeCardFromRemainingCards(c1); // Die neu hinzugefügten Karten werden vom "Stapel" gelöscht
+            g.removeCardFromRemainingCards(c2);
+            g.removeCardFromRemainingCards(c3);
+            possibleSetsLabel.setText(g.getPossibleSets() + ""); // Possibe Sets wird gepudatet
+            g.getExampleSet().clear();
+            cardsRemainingLabel.setText(g.getRemainingCards().size() + ""); // Remainig Cards wird gepudatet
+            setCardShadow(image1, image2, image3); // Kartenschatten wird auf allen 3 Images wieder zurückgesetzt
+            clickedSet.clear(); // clickedSet wird gecleared
+            imageViews.clear(); // Image Views werden geleared
+            g.setClickable(true);
+
+    }
+
     public Effect cardShadow() {
         DropShadow shadow = new DropShadow();
         shadow.setOffsetX(8);
@@ -342,9 +341,6 @@ public class GamePanel {
     }
 
     public void setCardShadow(ImageView i1, ImageView i2, ImageView i3) {
-        i1 = imageViews.get(0);
-        i2 = imageViews.get(1);
-        i3 = imageViews.get(2);
         i1.setEffect(cardShadow());
         i2.setEffect(cardShadow());
         i3.setEffect(cardShadow());

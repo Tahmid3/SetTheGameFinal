@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class Game {
-    private LinkedList<Card> remainingCards = new LinkedList<>(); //ALle noch nicht benutzen Karten
+    private LinkedList<Card> remainingCards = new LinkedList<>(); //Alle noch nicht benutzen Karten
     private LinkedList<Card> gameDeck = new LinkedList<>(); //Aktuell aufgelegtes Kartenspiel
     private LinkedList<Card> exampleSet = new LinkedList<>(); //Beispielset
 

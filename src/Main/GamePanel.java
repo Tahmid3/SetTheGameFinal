@@ -154,6 +154,10 @@ public class GamePanel {
                         @Override
                         public void handle(WorkerStateEvent workerStateEvent) {
                             if (g.checkSet(clickedSet.get(image1), clickedSet.get(image2), clickedSet.get(image3))) { // Wenn die ausgewählten Karten ein Set sind...
+                                g.removeCardFromGameDeck(clickedSet.get(image1)); // Karten werden aus dem Spieldeck entfernt
+                                g.removeCardFromGameDeck(clickedSet.get(image2));
+                                g.removeCardFromGameDeck(clickedSet.get(image3));
+
                                 setThreeNewCards(image1,image2,image3);
                                 foundSets++; // Gefundene Sets um 1 nach oben
                                 foundSetsLabel.setText("" + foundSets);
@@ -162,8 +166,9 @@ public class GamePanel {
                                 clickedSet.clear(); // clickedSet wird gecleared
                                 imageViews.clear(); // Image Views werden geleared
                                 i = 0; // Ausgewählten Karten werden auf 0 zurückgesetzt
-                                g.setClickable(true);
+
                             }
+                            g.setClickable(true);
                         }
                     });
                     new Thread(sleeper).start();
@@ -183,14 +188,13 @@ public class GamePanel {
                     }
                 }
             }
-        g.getExampleSet().clear();
         g.setClickable(false);
 
         Task<Void> sleeper = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 try {
-                    Thread.sleep(2500);
+                    Thread.sleep(2000);
                 } catch(InterruptedException ex) {
 
                 }
@@ -200,14 +204,17 @@ public class GamePanel {
         sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
-                for(ImageView view : cardDeck.keySet()) {
+                for (ImageView view : cardDeck.keySet()) {
                     view.setEffect(cardShadow());
                 }
                 ImageView v1 = helpList.get(0);
                 ImageView v2 = helpList.get(1);
                 ImageView v3 = helpList.get(2);
                 g.setClickable(true);
-                setThreeNewCards(v1,v2,v3);
+                g.removeCardFromGameDeck(g.getExampleSet().get(0));
+                g.removeCardFromGameDeck(g.getExampleSet().get(1));
+                g.removeCardFromGameDeck(g.getExampleSet().get(2));
+                setThreeNewCards(v1, v2, v3);
             }
         });
         new Thread(sleeper).start();
@@ -275,9 +282,6 @@ public class GamePanel {
     }
 
     public void setThreeNewCards(ImageView image1, ImageView image2, ImageView image3) {
-            g.removeCardFromGameDeck(clickedSet.get(image1)); // Karten werden aus dem Spieldeck entfernt
-            g.removeCardFromGameDeck(clickedSet.get(image2));
-            g.removeCardFromGameDeck(clickedSet.get(image3));
             Card c1 = g.getRemainingCards().get(0); // Es werden duch c1,c2,c3 3 neue Karten vom "Stapel" abgehoben
             Card c2 = g.getRemainingCards().get(1);
             Card c3 = g.getRemainingCards().get(2);
@@ -308,6 +312,7 @@ public class GamePanel {
             clickedSet.clear(); // clickedSet wird gecleared
             imageViews.clear(); // Image Views werden geleared
             g.setClickable(true);
+            i=0;
 
     }
 

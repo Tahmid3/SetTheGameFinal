@@ -29,7 +29,7 @@ public class MainMenu {
     }
 
     public void onClickOptions() throws Exception {
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("OptionMenu.fxml"));
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("ScoreBoard.fxml"));
         window.getChildren().setAll(pane);
     }
 

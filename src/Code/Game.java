@@ -174,11 +174,12 @@ public class Game {
                 }
             }
         }
-        this.exampleSet.add(exampleSet.get(0));
-        this.exampleSet.add(exampleSet.get(1));
-        this.exampleSet.add(exampleSet.get(2));
+        if(exampleSet.size()>2) {
+            this.exampleSet.add(exampleSet.get(0));
+            this.exampleSet.add(exampleSet.get(1));
+            this.exampleSet.add(exampleSet.get(2));
+        }
         return set.size();
-
     }
 
     public void sortList(LinkedList<Card> list) {

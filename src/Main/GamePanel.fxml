@@ -135,10 +135,6 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></ImageView>
-      <ImageView fx:id="i2" fitHeight="200.0" fitWidth="130.0" layoutX="605.0" layoutY="72.0" onMouseClicked="#onClick" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></ImageView>
       <ImageView fx:id="i6" fitHeight="200.0" fitWidth="130.0" layoutX="605.0" layoutY="344.0" onMouseClicked="#onClick" pickOnBounds="true" preserveRatio="true">
          <cursor>
             <Cursor fx:constant="HAND" />

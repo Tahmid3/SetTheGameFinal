@@ -119,7 +119,7 @@ public class GamePanel {
 
 
     public void onClick(Event event) throws IOException { // Die Methode wird immer dann aufgerufen, wenn eine Karte angeklickt wird
-        if(g.isClickable()) { //Wenn die Karte anclickbar ist (Sie ist nur dann nicht anklickbar, während der 2,5 Sekunden in denen ein Beispielset angezeigt wird)
+        if(g.isClickable()) { //Wenn die Karte anklickbar ist (Sie ist nur dann nicht anklickbar, während der 2,5 Sekunden in denen ein Beispielset angezeigt wird)
             ImageView view = (ImageView) event.getSource(); //Das angeklickte "Bild" wird sich über das event geholt
             if (clickedSet.keySet().contains(view)) { //Wenn die Map, in der nur die aktuell angeklickten Karten - mit ihren dazugehörigen Images - drin sind, die aktuell angeklickte Karte bereits enthält...
                 view.setEffect(cardShadow()); //Wird die Karte entwählt...also der Schatten wird zurückgesetzt
@@ -159,6 +159,14 @@ public class GamePanel {
                                 g.removeCardFromGameDeck(clickedSet.get(image3));
 
                                 setThreeNewCards(image1,image2,image3);
+                                if(g.getPossibleSets()==0) {
+                                    try{
+                                        refreshGamePanel();
+                                    } catch (IOException ex) {
+
+                                    }
+                                    g.getExampleSet().clear();
+                                }
                                 foundSets++; // Gefundene Sets um 1 nach oben
                                 foundSetsLabel.setText("" + foundSets);
                             } else {
@@ -215,6 +223,14 @@ public class GamePanel {
                 g.removeCardFromGameDeck(g.getExampleSet().get(1));
                 g.removeCardFromGameDeck(g.getExampleSet().get(2));
                 setThreeNewCards(v1, v2, v3);
+                if(g.getPossibleSets()==0) {
+                    try{
+                        refreshGamePanel();
+                    } catch (IOException ex) {
+
+                    }
+                    g.getExampleSet().clear();
+                }
             }
         });
         new Thread(sleeper).start();
@@ -236,6 +252,18 @@ public class GamePanel {
             imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c.toString() + ".png")), null));
             g.removeCardFromRemainingCards(c);
             counter++;
+        }
+        cardsRemainingLabel.setText(g.getRemainingCards().size() + "");
+        possibleSetsLabel.setText("" + g.getPossibleSets());
+        g.getExampleSet().clear();
+        if(g.getPossibleSets()==0) {
+            try {
+                refreshGamePanel();
+            } catch (IOException ex) {
+
+            }
+            g.getExampleSet().clear();
+
         }
     }
 
@@ -268,8 +296,9 @@ public class GamePanel {
                 counter++;
             }
             if(g.getPossibleSets()==0) {
-
+                refreshGamePanel();
             }
+            g.getExampleSet().clear();
             setLabels();
             sideMenu.setVisible(true);
             skip.setVisible(true);
@@ -313,7 +342,15 @@ public class GamePanel {
             imageViews.clear(); // Image Views werden geleared
             g.setClickable(true);
             i=0;
+            if(g.getPossibleSets()==0) {
+                try {
+                    refreshGamePanel();
+                } catch (IOException ex) {
 
+                }
+                g.getExampleSet().clear();
+
+            }
     }
 
     public Effect cardShadow() {

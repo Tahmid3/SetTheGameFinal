@@ -157,8 +157,8 @@ public class GamePanel {
                                 g.removeCardFromGameDeck(clickedSet.get(image1)); // Karten werden aus dem Spieldeck entfernt
                                 g.removeCardFromGameDeck(clickedSet.get(image2));
                                 g.removeCardFromGameDeck(clickedSet.get(image3));
-
                                 setThreeNewCards(image1,image2,image3);
+
                                 if(g.getPossibleSets()==0) {
                                     try{
                                         refreshGamePanel();
@@ -167,6 +167,8 @@ public class GamePanel {
                                     }
                                     g.getExampleSet().clear();
                                 }
+
+
                                 foundSets++; // Gefundene Sets um 1 nach oben
                                 foundSetsLabel.setText("" + foundSets);
                             } else {
@@ -189,6 +191,7 @@ public class GamePanel {
         LinkedList<ImageView> helpList = new LinkedList<>();
         g.getPossibleSets();
         for(ImageView view : cardDeck.keySet()) {
+            view.setEffect(cardShadow());
                 for(int i=0;i<3;i++) {
                     if(cardDeck.get(view).toString().equals(g.getExampleSet().get(i).toString())) {
                         view.setEffect(exampleCardEffect());
@@ -215,22 +218,28 @@ public class GamePanel {
                 for (ImageView view : cardDeck.keySet()) {
                     view.setEffect(cardShadow());
                 }
-                ImageView v1 = helpList.get(0);
-                ImageView v2 = helpList.get(1);
-                ImageView v3 = helpList.get(2);
+                    ImageView v1 = helpList.get(0);
+                    ImageView v2 = helpList.get(1);
+                    ImageView v3 = helpList.get(2);
+                    g.removeCardFromGameDeck(g.getExampleSet().get(0));
+                    g.removeCardFromGameDeck(g.getExampleSet().get(1));
+                    g.removeCardFromGameDeck(g.getExampleSet().get(2));
+                    g.getExampleSet().clear();
+                    setThreeNewCards(v1, v2, v3);
+
+
                 g.setClickable(true);
-                g.removeCardFromGameDeck(g.getExampleSet().get(0));
-                g.removeCardFromGameDeck(g.getExampleSet().get(1));
-                g.removeCardFromGameDeck(g.getExampleSet().get(2));
-                setThreeNewCards(v1, v2, v3);
+
                 if(g.getPossibleSets()==0) {
                     try{
+                        g.getExampleSet().clear();
                         refreshGamePanel();
                     } catch (IOException ex) {
 
                     }
-                    g.getExampleSet().clear();
                 }
+
+
             }
         });
         new Thread(sleeper).start();
@@ -243,28 +252,30 @@ public class GamePanel {
     }
 
     public void refreshGamePanel() throws IOException {
-        int counter = 0;
-        for (ImageView imageView : cardDeck.keySet()) {
-            Card c = g.getRemainingCards().get(counter);
-            imageView.setEffect(cardShadow());
-            g.addCardToGameDeck(c);
-            cardDeck.put(imageView, c);
-            imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c.toString() + ".png")), null));
-            g.removeCardFromRemainingCards(c);
-            counter++;
-        }
-        cardsRemainingLabel.setText(g.getRemainingCards().size() + "");
-        possibleSetsLabel.setText("" + g.getPossibleSets());
-        g.getExampleSet().clear();
-        if(g.getPossibleSets()==0) {
-            try {
-                refreshGamePanel();
-            } catch (IOException ex) {
-
+        if(g.getRemainingCards().size()>11) {
+            g.getGameDeck().clear();
+            for (ImageView imageView : cardDeck.keySet()) {
+                Card c = g.getRemainingCards().pop();
+                imageView.setEffect(cardShadow());
+                g.addCardToGameDeck(c);
+                cardDeck.put(imageView, c);
+                imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c.toString() + ".png")), null));
             }
+            cardsRemainingLabel.setText(g.getRemainingCards().size() + "");
+            possibleSetsLabel.setText("" + g.getPossibleSets());
             g.getExampleSet().clear();
+            if(g.getPossibleSets()==0) {
+                try {
+                    g.getExampleSet().clear();
+                    refreshGamePanel();
+                } catch (IOException ex) {
 
+                }
+            }
+        } else {
+            setEndScreen();
         }
+
     }
 
     public void createFirstDeck() throws IOException {
@@ -274,46 +285,53 @@ public class GamePanel {
         } else if (s.length() < 3) {
             console.setText("This name is too short!");
         } else {
-            console.setVisible(false);
-            int counter = 0;
-            Game g = new Game();
-            this.g = g;
 
-            g.createDeck();
-            g.mixCards();
-            createCardDeckMap();
-            for (int i=0; i<12;i++) {
-                Card c = g.getRemainingCards().get(i);
-                g.addCardToGameDeck(c);
-                g.removeCardFromRemainingCards(c);
+                console.setVisible(false);
+                int counter = 0;
+                Game g = new Game();
+                this.g = g;
+
+                g.createDeck();
+                g.mixCards();
+                createCardDeckMap();
+            if(g.getRemainingCards().size()>11) {
+                for (int i=0; i<12;i++) {
+                    Card c = g.getRemainingCards().get(i);
+                    g.addCardToGameDeck(c);
+                    g.removeCardFromRemainingCards(c);
+                }
+                g.sortList(g.getGameDeck());
+                for (ImageView imageView : cardDeck.keySet()) {
+                    Card c = g.getGameDeck().pop();
+                    g.getGameDeck().add(c);
+                    imageView.setEffect(cardShadow());
+                    cardDeck.put(imageView, c);
+                    imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c.toString() + ".png")), null));
+                    counter++;
+                }
+                if(g.getPossibleSets()==0) {
+                    g.getExampleSet().clear();
+                    refreshGamePanel();
+                }
+                setLabels();
+                sideMenu.setVisible(true);
+                skip.setVisible(true);
+                field.setVisible(false);
+                start.setVisible(false);
+            } else {
+                setEndScreen();
             }
-            g.sortList(g.getGameDeck());
-            for (ImageView imageView : cardDeck.keySet()) {
-                Card c = g.getGameDeck().get(counter);
-                imageView.setEffect(cardShadow());
-                cardDeck.put(imageView, c);
-                imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c.toString() + ".png")), null));
-                counter++;
-            }
-            if(g.getPossibleSets()==0) {
-                refreshGamePanel();
-            }
-            g.getExampleSet().clear();
-            setLabels();
-            sideMenu.setVisible(true);
-            skip.setVisible(true);
-            field.setVisible(false);
-            start.setVisible(false);
-            System.out.println(g.getGameDeck().toString());
+
 
         }
 
     }
 
     public void setThreeNewCards(ImageView image1, ImageView image2, ImageView image3) {
-            Card c1 = g.getRemainingCards().get(0); // Es werden duch c1,c2,c3 3 neue Karten vom "Stapel" abgehoben
-            Card c2 = g.getRemainingCards().get(1);
-            Card c3 = g.getRemainingCards().get(2);
+        if(g.getRemainingCards().size()>2) {
+            Card c1 = g.getRemainingCards().pop(); // Es werden duch c1,c2,c3 3 neue Karten vom "Stapel" abgehoben
+            Card c2 = g.getRemainingCards().pop();
+            Card c3 = g.getRemainingCards().pop();
             try{
                 image1.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c1.toString() + ".png")), null)); // Diese Karten werde über den Befehl angezeigt
                 image2.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c2.toString() + ".png")), null));
@@ -331,9 +349,6 @@ public class GamePanel {
             g.addCardToGameDeck(c1); // Die Karten werden auch in der externen Liste in Spieldeck aufgenommen
             g.addCardToGameDeck(c2);
             g.addCardToGameDeck(c3);
-            g.removeCardFromRemainingCards(c1); // Die neu hinzugefügten Karten werden vom "Stapel" gelöscht
-            g.removeCardFromRemainingCards(c2);
-            g.removeCardFromRemainingCards(c3);
             possibleSetsLabel.setText(g.getPossibleSets() + ""); // Possibe Sets wird gepudatet
             g.getExampleSet().clear();
             cardsRemainingLabel.setText(g.getRemainingCards().size() + ""); // Remainig Cards wird gepudatet
@@ -344,13 +359,26 @@ public class GamePanel {
             i=0;
             if(g.getPossibleSets()==0) {
                 try {
+                    g.getExampleSet().clear();
                     refreshGamePanel();
                 } catch (IOException ex) {
 
                 }
-                g.getExampleSet().clear();
 
             }
+        } else {
+            setEndScreen();
+        }
+
+    }
+
+    public void setEndScreen() {
+        skip.setVisible(false);
+        sideMenu.setVisible(false);
+        for(ImageView view : cardDeck.keySet()) {
+            view.setVisible(false);
+        }
+        cardDeck.clear();
     }
 
     public Effect cardShadow() {

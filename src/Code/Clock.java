@@ -57,9 +57,9 @@ public class Clock {
             return this.toString();
         }
 
-        public String timer(String minutes) {
+        public String timer() {
         if(second2==0&&second1==0&&minute1==0&&minute2==0) {
-            return "00:00:00";
+
         }
             second2--;
             if(second2<0) {

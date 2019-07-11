@@ -1,5 +1,6 @@
 package Main;
 
+import Code.Game;
 import javafx.fxml.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;

@@ -14,16 +14,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="window" prefHeight="900.0" prefWidth="1280.0" style="-fx-background-color: #F4F4F6;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.GamePanel">
+<AnchorPane fx:id="window" onMouseEntered="#onMouseEnter" prefHeight="900.0" prefWidth="1280.0" style="-fx-background-color: #F4F4F6;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.GamePanel">
    <children>
-      <Pane layoutX="-1.0" prefHeight="900.0" prefWidth="284.0" style="-fx-background-color: #35374C;">
+      <Pane fx:id="leftMenu" layoutX="-1.0" prefHeight="911.0" prefWidth="284.0" style="-fx-background-color: #35374C;">
          <children>
             <Separator layoutX="42.0" layoutY="661.0" prefWidth="200.0" style="-fx-background-color: #F4F4F6;" />
-            <Label fx:id="l" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="93.0" prefHeight="118.0" prefWidth="247.0" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="16.0" />
-               </font>
-            </Label>
             <Pane fx:id="sideMenu" layoutX="42.0" layoutY="85.0" prefHeight="630.0" prefWidth="200.0" style="-fx-background-color: #35375f;" visible="false">
                <children>
                   <Separator layoutY="-1.0" prefWidth="200.0" />
@@ -92,7 +87,6 @@
                      </font>
                   </Label>
                   <Separator layoutX="40.0" layoutY="408.0" prefHeight="3.0" prefWidth="120.0" />
-                  <Label fx:id="console" alignment="CENTER" contentDisplay="CENTER" layoutX="-3.0" layoutY="599.0" prefHeight="35.0" prefWidth="206.0" textFill="RED" />
                   <Separator layoutX="40.0" layoutY="486.0" prefHeight="3.0" prefWidth="120.0" />
                   <ImageView fx:id="skipView" fitHeight="71.0" fitWidth="79.0" layoutX="68.0" layoutY="530.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -104,7 +98,7 @@
                         <Font name="System Bold" size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="trayStack" alignment="CENTER" layoutX="125.0" layoutY="554.0" prefHeight="35.0" prefWidth="79.0" textFill="WHITE">
+                  <Label fx:id="trayStack" alignment="CENTER" layoutX="125.0" layoutY="548.0" prefHeight="35.0" prefWidth="79.0" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font>
@@ -146,6 +140,11 @@
             </Button>
             <Pane fx:id="options" layoutX="42.0" layoutY="77.0" prefHeight="516.0" prefWidth="200.0">
                <children>
+                  <Label fx:id="l" alignment="CENTER" contentDisplay="CENTER" prefHeight="118.0" prefWidth="247.0" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
                   <Label layoutX="53.0" layoutY="28.0" text="Mode" textFill="WHITE">
                      <font>
                         <Font size="36.0" />
@@ -159,6 +158,7 @@
                   </CheckBox>
                </children>
             </Pane>
+            <Label fx:id="console" alignment="CENTER" contentDisplay="CENTER" layoutX="39.0" layoutY="690.0" prefHeight="35.0" prefWidth="206.0" textFill="RED" />
          </children>
          <effect>
             <DropShadow height="7.42" offsetX="3.0" offsetY="3.0" radius="5.0625" width="14.83" />
@@ -212,5 +212,52 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></ImageView>
+      <Pane fx:id="endPane" prefHeight="918.0" prefWidth="1280.0" style="-fx-background-color: #35374C;" visible="false">
+         <children>
+            <Label layoutX="516.0" layoutY="186.0" text="GAME OVER" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="43.0" />
+               </font>
+            </Label>
+            <Label layoutX="432.0" layoutY="379.0" text="NAME:" textFill="WHITE">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Label layoutX="429.0" layoutY="459.0" text="SCORE:" textFill="WHITE">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Label layoutX="349.0" layoutY="541.0" text="FOUND SETS:" textFill="WHITE">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="gameOverName" layoutX="699.0" layoutY="379.0" prefHeight="40.0" prefWidth="65.0" textFill="WHITE">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="gameOverScore" layoutX="699.0" layoutY="459.0" prefHeight="40.0" prefWidth="65.0" textFill="WHITE">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="gameOverFoundSets" layoutX="699.0" layoutY="541.0" prefHeight="40.0" prefWidth="65.0" textFill="WHITE">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Button fx:id="gameOverBackToMenu" layoutX="552.0" layoutY="671.0" mnemonicParsing="false" onAction="#onClickBackToMenu" prefHeight="65.0" prefWidth="176.0" style="-fx-background-color: #35374C; -fx-border-color: #ffffff;" text="&lt; Back to Main Menu" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

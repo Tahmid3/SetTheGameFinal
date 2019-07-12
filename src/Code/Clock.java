@@ -60,7 +60,7 @@ public class Clock {
         public String timer() {
         if(second2==0&&second1==0&&minute1==0&&minute2==0) {
 
-        }
+        } else {
             second2--;
             if(second2<0) {
                 second1--;
@@ -74,6 +74,8 @@ public class Clock {
                     }
                 }
             }
+
+        }
             return this.toString();
         }
 }

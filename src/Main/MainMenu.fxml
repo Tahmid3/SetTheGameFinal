@@ -4,21 +4,15 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1280.0" style="-fx-background-color: #35374C;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.MainMenu">
    <children>
-      <Button fx:id="end" layoutX="539.0" layoutY="820.0" onAction="#onClickEnd" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: #35374C; -fx-border-color: #ffffff;" text="End" textFill="WHITE">
+      <Button layoutX="922.0" layoutY="208.0" mnemonicParsing="false" onMouseEntered="#dragOverEffect" onMouseExited="#dragOverEffectOver" prefHeight="264.0" prefWidth="304.0" style="-fx-background-color: #00B7E0; -fx-border-color: #ffffff;" text="RULES" textFill="#35374c">
          <font>
-            <Font size="25.0" />
-         </font>
-      </Button>
-      <Button layoutX="922.0" layoutY="202.0" mnemonicParsing="false" onAction="#onClickStart" onMouseEntered="#dragOverEffect" onMouseExited="#dragOverEffectOver" prefHeight="264.0" prefWidth="304.0" style="-fx-background-color: #00B7E0; -fx-border-color: #ffffff;" textFill="WHITE">
-         <font>
-            <Font size="25.0" />
+            <Font size="36.0" />
          </font>
          <effect>
             <DropShadow height="26.93" radius="17.3525" width="44.48" />
@@ -27,9 +21,9 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="587.0" layoutY="489.0" onMouseEntered="#dragOverEffect" onMouseExited="#dragOverEffectOver" prefHeight="270.0" prefWidth="639.0" style="-fx-background-color: #F8CC35; -fx-border-color: #ffffff;" textFill="WHITE">
+      <Button fx:id="end" layoutX="587.0" layoutY="495.0" onAction="#onClickEnd" onMouseEntered="#dragOverEffect" onMouseExited="#dragOverEffectOver" prefHeight="270.0" prefWidth="639.0" style="-fx-background-color: #F8CC35; -fx-border-color: #ffffff;" text="END" textFill="#35374c">
          <font>
-            <Font size="25.0" />
+            <Font size="36.0" />
          </font>
          <effect>
             <DropShadow height="26.93" radius="17.3525" width="44.48" />
@@ -38,54 +32,33 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="587.0" layoutY="202.0" mnemonicParsing="false" onMouseEntered="#dragOverEffect" onMouseExited="#dragOverEffectOver" prefHeight="264.0" prefWidth="304.0" style="-fx-background-color: #55DEA7; -fx-border-color: #ffffff;" textFill="WHITE">
+      <Button layoutX="587.0" layoutY="208.0" mnemonicParsing="false" onAction="#onClickOptions" onMouseEntered="#dragOverEffect" onMouseExited="#dragOverEffectOver" prefHeight="264.0" prefWidth="304.0" style="-fx-background-color: #55DEA7; -fx-border-color: #ffffff;" text="SCOREBOARD" textFill="#35374c">
          <font>
-            <Font size="25.0" />
+            <Font size="36.0" />
          </font>
          <effect>
-            <DropShadow height="26.93" radius="17.3525" width="44.48" />
+            <DropShadow height="35.71" radius="19.5475" width="44.48" />
          </effect>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Pane prefHeight="65.0" prefWidth="1280.0" style="-fx-background-color: #F4F4F6;">
-         <children>
-            <Label layoutX="518.0" layoutY="5.0" prefHeight="56.0" prefWidth="244.0" text="Set the Game">
-               <font>
-                  <Font size="39.0" />
-               </font>
-               <effect>
-                  <DropShadow height="0.0" offsetX="1.0" offsetY="2.0" radius="0.0" width="0.0" />
-               </effect>
-            </Label>
-         </children>
-         <effect>
-            <DropShadow height="9.14" offsetX="3.0" offsetY="3.0" radius="4.8125" width="12.11" />
-         </effect>
-      </Pane>
-      <Button layoutX="55.0" layoutY="202.0" mnemonicParsing="false" onAction="#onClickStart" onMouseEntered="#dragOverEffect" onMouseExited="#dragOverEffectOver" prefHeight="557.0" prefWidth="491.0" style="-fx-background-color: FF7759; -fx-border-color: #ffffff;" textFill="WHITE">
+      <Button layoutX="55.0" layoutY="208.0" mnemonicParsing="false" onAction="#onClickStart" onMouseEntered="#dragOverEffect" onMouseExited="#dragOverEffectOver" prefHeight="557.0" prefWidth="491.0" style="-fx-background-color: FF7759; -fx-border-color: #ffffff;" text="PLAY" textFill="#35374c">
          <font>
-            <Font size="25.0" />
+            <Font size="36.0" />
          </font>
-         <effect>
-            <DropShadow height="26.93" radius="17.3525" width="44.48" />
-         </effect>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <effect>
+            <DropShadow height="35.71" radius="19.5475" width="44.48" />
+         </effect>
       </Button>
       <Pane layoutX="168.0" layoutY="556.0" />
-      <ImageView fx:id="rulesView" fitHeight="192.0" fitWidth="192.0" layoutX="646.0" layoutY="238.0" opacity="0.66" pickOnBounds="true" preserveRatio="true" />
-      <Label alignment="CENTER" layoutX="672.0" layoutY="296.0" text="Rules" textFill="#3d4180">
+      <Label layoutX="519.0" layoutY="74.0" text="Main Menu" textFill="WHITE">
          <font>
-            <Font name="System Bold" size="43.0" />
+            <Font name="System Bold" size="45.0" />
          </font>
       </Label>
-      <Button layoutX="587.0" layoutY="202.0" mnemonicParsing="false" onAction="#onClickOptions" onMouseEntered="#dragOverEffect" onMouseExited="#dragOverEffectOver" opacity="0.0" prefHeight="264.0" prefWidth="304.0" style="-fx-background-color: #55DEA7; -fx-border-color: #ffffff;" textFill="WHITE" visible="false">
-         <font>
-            <Font size="25.0" />
-         </font>
-      </Button>
    </children>
 </AnchorPane>

@@ -6,8 +6,10 @@ import javafx.fxml.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.event.Event;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
@@ -52,15 +54,19 @@ public class MainMenu {
     }
 
     public void dragOverEffect(Event event) {
+        DropShadow borderGlow = new DropShadow();
+        borderGlow.setOffsetY(0f);
+        borderGlow.setOffsetX(0f);
+        borderGlow.setColor(Color.WHITE);
+        borderGlow.setWidth(30);
+        borderGlow.setHeight(30);
         Button b = (Button) event.getSource();
-        effect = b.getEffect();
-        //b.setStyle("-fx-border-color: #46ff6e; ");
-        b.setEffect(null);
+        b.setEffect(borderGlow);
     }
 
     public void dragOverEffectOver(Event event) {
         Button b = (Button) event.getSource();
-        b.setEffect(effect);
+        b.setEffect(null);
     }
 
     public void preSettings() throws IOException {

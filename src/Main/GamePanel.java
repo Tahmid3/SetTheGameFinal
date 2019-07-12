@@ -4,6 +4,7 @@ import Code.Card;
 import Code.Clock;
 import Code.Game;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.embed.swing.SwingFXUtils;
@@ -21,6 +22,7 @@ import javafx.scene.paint.Color;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.IllegalCharsetNameException;
 import java.util.*;
 import javax.imageio.ImageIO;
 
@@ -38,7 +40,14 @@ public class GamePanel {
     int skipInt=0;
 
     boolean sorted = false;
-    boolean skipClickable = false;
+    boolean skipClickable = true;
+    boolean onEnterBoolean = true;
+
+    @FXML
+    Pane endPane;
+
+    @FXML
+    Pane leftMenu;
 
     @FXML
     ChoiceBox box;
@@ -136,6 +145,15 @@ public class GamePanel {
     Label skipLabel;
 
     @FXML
+    Label gameOverName;
+
+    @FXML
+    Label gameOverScore;
+
+    @FXML
+    Label gameOverFoundSets;
+
+    @FXML
     Button skip; // SKIP - Button im Spiel
 
     @FXML
@@ -143,6 +161,9 @@ public class GamePanel {
 
     @FXML
     Button menuButton; // Back to Menu - Button im Spiel
+
+    @FXML
+    Button gameOverBackToMenu;
 
     public void onClick(Event event) throws IOException { // Die Methode wird immer dann aufgerufen, wenn eine Karte angeklickt wird
         if(g.isClickable()) { //Wenn die Karte anklickbar ist (Sie ist nur dann nicht anklickbar, während der 2,5 Sekunden in denen ein Beispielset angezeigt wird)
@@ -169,6 +190,7 @@ public class GamePanel {
                         protected Void call() throws Exception {
                             try {
                                 g.setClickable(false);
+
                                 Thread.sleep(1000);
                             } catch(InterruptedException ex) {
 
@@ -180,6 +202,21 @@ public class GamePanel {
                         @Override
                         public void handle(WorkerStateEvent workerStateEvent) {
                             if (g.checkSet(clickedSet.get(image1), clickedSet.get(image2), clickedSet.get(image3))) { // Wenn die ausgewählten Karten ein Set sind...
+
+
+
+                                foundSets++; // Gefundene Sets um 1 nach oben
+                                foundSetsLabel.setText("" + foundSets);
+                                if((300-scoreInt)>0) {
+                                    score=score+(((300-scoreInt)*(300-scoreInt))/(900*Integer.parseInt(possibleSetsLabel.getText())));
+                                    System.out.println(Integer.parseInt(possibleSetsLabel.getText()));
+                                    g.getExampleSet().clear();
+                                    if(sorted==true) {
+                                        score=(score*3)/4;
+                                    }
+                                }
+                                scoreLabel.setText(score + "");
+                                scoreInt=0;
                                 g.removeCardFromGameDeck(clickedSet.get(image1)); // Karten werden aus dem Spieldeck entfernt
                                 g.removeCardFromGameDeck(clickedSet.get(image2));
                                 g.removeCardFromGameDeck(clickedSet.get(image3));
@@ -193,18 +230,6 @@ public class GamePanel {
                                     }
                                     g.getExampleSet().clear();
                                 }
-
-
-                                foundSets++; // Gefundene Sets um 1 nach oben
-                                foundSetsLabel.setText("" + foundSets);
-                                if((300-scoreInt)>0) {
-                                    score=score+(300-scoreInt);
-                                    if(sorted==true) {
-                                        score=(score*3)/4;
-                                    }
-                                }
-                                scoreLabel.setText(score + "");
-                                scoreInt=0;
                             } else {
                                 setCardShadow(image1, image2, image3); // Kartenschatten wird auf allen 3 Images wieder zurückgesetzt
                                 clickedSet.clear(); // clickedSet wird gecleared
@@ -222,62 +247,69 @@ public class GamePanel {
     }
 
     public void onCLickSkip(Event event) throws IOException{ //Fehler mit der helpList
-        scoreInt=0;
-        LinkedList<ImageView> helpList = new LinkedList<>();
-        g.getPossibleSets();
-        for(ImageView view : cardDeck.keySet()) {
-            view.setEffect(cardShadow());
-                for(int i=0;i<3;i++) {
-                    if(cardDeck.get(view).toString().equals(g.getExampleSet().get(i).toString())) {
+        if(skipClickable==true) {
+            skipClickable = false;
+            scoreInt = 0;
+            LinkedList<ImageView> helpList = new LinkedList<>();
+            g.getPossibleSets();
+            for (ImageView view : cardDeck.keySet()) {
+                view.setEffect(cardShadow());
+                for (int i = 0; i < 3; i++) {
+                    if (cardDeck.get(view).toString().equals(g.getExampleSet().get(i).toString())) {
                         view.setEffect(exampleCardEffect());
                         helpList.add(view);
                     }
                 }
             }
-        g.setClickable(false);
-
-        Task<Void> sleeper = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                try {
-                    Thread.sleep(1000);
-                } catch(InterruptedException ex) {
-
-                }
-                return null;
-            }
-        };
-        sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent workerStateEvent) {
-                for (ImageView view : cardDeck.keySet()) {
-                    view.setEffect(cardShadow());
-                }
-                    ImageView v1 = helpList.get(0);
-                    ImageView v2 = helpList.get(1);
-                    ImageView v3 = helpList.get(2);
-                    g.removeCardFromGameDeck(g.getExampleSet().get(0));
-                    g.removeCardFromGameDeck(g.getExampleSet().get(1));
-                    g.removeCardFromGameDeck(g.getExampleSet().get(2));
-                    g.getExampleSet().clear();
-                    setThreeNewCards(v1, v2, v3);
+            g.setClickable(false);
 
 
-                g.setClickable(true);
-
-                if(g.getPossibleSets()==0) {
-                    try{
-                        g.getExampleSet().clear();
-                        refreshGamePanel();
-                    } catch (IOException ex) {
+            Task<Void> sleeper = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
 
                     }
+                    return null;
                 }
+            };
+            sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    skipClickable = true;
+                    for (ImageView view : cardDeck.keySet()) {
+                        view.setEffect(cardShadow());
+                    }
+                    if (helpList.size() > 2) {
+                        ImageView v1 = helpList.get(0);
+                        ImageView v2 = helpList.get(1);
+                        ImageView v3 = helpList.get(2);
+
+                        g.removeCardFromGameDeck(g.getExampleSet().get(0));
+                        g.removeCardFromGameDeck(g.getExampleSet().get(1));
+                        g.removeCardFromGameDeck(g.getExampleSet().get(2));
+                        g.getExampleSet().clear();
+                        setThreeNewCards(v1, v2, v3);
+                    }
+
+                    g.setClickable(true);
+
+                    if (g.getPossibleSets() == 0) {
+                        try {
+                            g.getExampleSet().clear();
+                            refreshGamePanel();
+                        } catch (IOException ex) {
+
+                        }
+                    }
 
 
-            }
-        });
-        new Thread(sleeper).start();
+                }
+            });
+            new Thread(sleeper).start();
+        }
 
     }
 
@@ -317,7 +349,10 @@ public class GamePanel {
             console.setText("This name is too long!");
         } else if (s.length() < 3) {
             console.setText("This name is too short!");
-        } else {
+        } //else if(!box.isShowing()) {
+           // console.setText("Please choose a Mode!");
+        //}
+        else {
             if(sortedCards.isSelected()) {
                 sorted=true;
             }
@@ -430,15 +465,16 @@ public class GamePanel {
     }
 
     public void setEndScreen() {
+        endPane.setVisible(true);
         skip.setVisible(false);
-        sideMenu.setVisible(false);
+        leftMenu.setVisible(false);
         for(ImageView view : cardDeck.keySet()) {
             view.setVisible(false);
         }
         cardDeck.clear();
-        if(sorted==true) {
-            score=(3*score)/4;
-        }
+        gameOverFoundSets.setText(foundSets + "");
+        gameOverName.setText(nameLabel.getText());
+        gameOverScore.setText(score + "");
     }
 
     public Effect cardShadow() {
@@ -476,6 +512,16 @@ public class GamePanel {
         i3.setEffect(cardShadow());
     }
 
+    public void onMouseEnter() {
+        if(onEnterBoolean==true) {
+            box.getItems().add("Time");
+            box.getItems().add("Normal");
+            System.out.println("Test");
+            onEnterBoolean=false;
+        }
+
+    }
+
     private LinkedHashMap<ImageView, Card> createCardDeckMap() {
         cardDeck.put(i1, null);
         cardDeck.put(i2, null);
@@ -498,15 +544,33 @@ public class GamePanel {
         skipView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/skip_image.png")), null));
         Timer timer = new Timer();
         Clock c = new Clock();
-        timeLabel.setText("00:00:00");
-        c.setMinute2(5);
+
+        if(box.getValue()=="Time") {
+            c.setMinute2(5);
+            timeLabel.setText("00:05:00");
+        } else {
+            timeLabel.setText("00:00:00");
+        }
         timer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
             public void run() {
                 Platform.runLater(() -> {
                     scoreInt++;
-                    timeLabel.setText(c.timer());
+                    if(box.getValue()=="Time") {
+                        String timer = c.timer();
+                        if(timer.equals("00:00:00")) {
+                            setEndScreen();
+                        }
+                        timeLabel.setText(timer);
+                    } else {
+                        String normal = c.start();
+                        if(normal.equals("10:00:00")) {
+                            setEndScreen();
+                        }
+                        timeLabel.setText(normal);
+                    }
+
                 });
             }
         }, 1000, 1000);

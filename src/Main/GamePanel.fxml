@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
@@ -15,7 +16,7 @@
 
 <AnchorPane fx:id="window" prefHeight="900.0" prefWidth="1280.0" style="-fx-background-color: #F4F4F6;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.GamePanel">
    <children>
-      <Pane prefHeight="900.0" prefWidth="283.0" style="-fx-background-color: #35374C;">
+      <Pane layoutX="-1.0" prefHeight="900.0" prefWidth="284.0" style="-fx-background-color: #35374C;">
          <children>
             <Separator layoutX="42.0" layoutY="661.0" prefWidth="200.0" style="-fx-background-color: #F4F4F6;" />
             <Label fx:id="l" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="93.0" prefHeight="118.0" prefWidth="247.0" textAlignment="CENTER" textFill="WHITE">
@@ -26,8 +27,8 @@
             <Pane fx:id="sideMenu" layoutX="42.0" layoutY="85.0" prefHeight="630.0" prefWidth="200.0" style="-fx-background-color: #35375f;" visible="false">
                <children>
                   <Separator layoutY="-1.0" prefWidth="200.0" />
-                  <Separator layoutY="-1.0" orientation="VERTICAL" prefHeight="500.0" prefWidth="6.0" style="-fx-background-color: #ffffff;" />
-                  <Separator layoutX="194.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="500.0" prefWidth="6.0" style="-fx-background-color: #ffffff;" />
+                  <Separator layoutY="-1.0" orientation="VERTICAL" prefHeight="630.0" prefWidth="0.0" style="-fx-background-color: #ffffff;" />
+                  <Separator layoutX="194.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="630.0" prefWidth="6.0" style="-fx-background-color: #ffffff;" />
                   <Label alignment="CENTER" layoutX="62.0" layoutY="3.0" prefHeight="65.0" prefWidth="79.0" text="SET" textFill="WHITE">
                      <font>
                         <Font size="37.0" />
@@ -47,12 +48,14 @@
                   </Label>
                   <Separator layoutX="43.0" layoutY="322.0" prefHeight="3.0" prefWidth="120.0" />
                   <Separator layoutX="43.0" layoutY="152.0" prefHeight="3.0" prefWidth="120.0" />
+                  <ImageView fx:id="trayStackView" fitHeight="89.0" fitWidth="71.0" layoutX="130.0" layoutY="530.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="remainingCardsView" fitHeight="65.0" fitWidth="50.0" layoutX="17.0" layoutY="533.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
                   <Label alignment="CENTER" layoutX="43.0" layoutY="238.0" prefHeight="35.0" prefWidth="120.0" text="Found Sets" textFill="WHITE">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="35.0" layoutY="324.0" prefHeight="35.0" prefWidth="130.0" text="Cards Remaining" textFill="WHITE">
+                  <Label alignment="CENTER" layoutX="35.0" layoutY="324.0" prefHeight="35.0" prefWidth="130.0" text="Score" textFill="WHITE">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -72,12 +75,12 @@
                         <Font name="System Bold" size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="cardsRemainingLabel" alignment="CENTER" layoutX="61.0" layoutY="358.0" prefHeight="35.0" prefWidth="79.0" textFill="WHITE">
+                  <Label fx:id="scoreLabel" alignment="CENTER" layoutX="61.0" layoutY="358.0" prefHeight="35.0" prefWidth="79.0" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font>
                   </Label>
-                  <Separator layoutY="636.0" prefHeight="3.0" prefWidth="200.0" />
+                  <Separator layoutY="629.0" prefHeight="3.0" prefWidth="200.0" />
                   <Label fx:id="timeLabel" alignment="CENTER" layoutX="58.0" layoutY="443.0" prefHeight="35.0" prefWidth="79.0" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="17.0" />
@@ -89,6 +92,28 @@
                      </font>
                   </Label>
                   <Separator layoutX="40.0" layoutY="408.0" prefHeight="3.0" prefWidth="120.0" />
+                  <Label fx:id="console" alignment="CENTER" contentDisplay="CENTER" layoutX="-3.0" layoutY="599.0" prefHeight="35.0" prefWidth="206.0" textFill="RED" />
+                  <Separator layoutX="40.0" layoutY="486.0" prefHeight="3.0" prefWidth="120.0" />
+                  <ImageView fx:id="skipView" fitHeight="71.0" fitWidth="79.0" layoutX="68.0" layoutY="530.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../skip_image.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="cardsRemainingLabel" alignment="CENTER" layoutX="1.0" layoutY="548.0" prefHeight="35.0" prefWidth="79.0" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="trayStack" alignment="CENTER" layoutX="125.0" layoutY="554.0" prefHeight="35.0" prefWidth="79.0" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="skipLabel" alignment="CENTER" layoutX="65.0" layoutY="548.0" prefHeight="35.0" prefWidth="79.0" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
             <Button fx:id="start" alignment="CENTER" contentDisplay="CENTER" layoutX="63.0" layoutY="747.0" mnemonicParsing="false" onAction="#createFirstDeck" prefHeight="65.0" prefWidth="150.0" style="-fx-background-color: #35374C; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4;" text="START" textFill="WHITE">
@@ -111,7 +136,6 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Label fx:id="console" alignment="CENTER" contentDisplay="CENTER" layoutX="39.0" layoutY="700.0" prefHeight="35.0" prefWidth="206.0" textFill="RED" />
             <Button fx:id="menuButton" mnemonicParsing="false" onAction="#onClickBackToMenu" prefHeight="65.0" prefWidth="176.0" style="-fx-background-color: #35374C;" text="&lt; Back to Main Menu" textFill="WHITE">
                <font>
                   <Font size="15.0" />
@@ -120,7 +144,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Pane fx:id="options" layoutX="42.0" layoutY="77.0" prefHeight="516.0" prefWidth="200.0" visible="false">
+            <Pane fx:id="options" layoutX="42.0" layoutY="77.0" prefHeight="516.0" prefWidth="200.0">
                <children>
                   <Label layoutX="53.0" layoutY="28.0" text="Mode" textFill="WHITE">
                      <font>

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -26,7 +27,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="587.0" layoutY="489.0" onAction="#onClickOptions" onMouseEntered="#dragOverEffect" onMouseExited="#dragOverEffectOver" prefHeight="270.0" prefWidth="639.0" style="-fx-background-color: #F8CC35; -fx-border-color: #ffffff;" textFill="WHITE">
+      <Button layoutX="587.0" layoutY="489.0" onMouseEntered="#dragOverEffect" onMouseExited="#dragOverEffectOver" prefHeight="270.0" prefWidth="639.0" style="-fx-background-color: #F8CC35; -fx-border-color: #ffffff;" textFill="WHITE">
          <font>
             <Font size="25.0" />
          </font>
@@ -75,5 +76,16 @@
          </cursor>
       </Button>
       <Pane layoutX="168.0" layoutY="556.0" />
+      <ImageView fx:id="rulesView" fitHeight="192.0" fitWidth="192.0" layoutX="646.0" layoutY="238.0" opacity="0.66" pickOnBounds="true" preserveRatio="true" />
+      <Label alignment="CENTER" layoutX="672.0" layoutY="296.0" text="Rules" textFill="#3d4180">
+         <font>
+            <Font name="System Bold" size="43.0" />
+         </font>
+      </Label>
+      <Button layoutX="587.0" layoutY="202.0" mnemonicParsing="false" onAction="#onClickOptions" onMouseEntered="#dragOverEffect" onMouseExited="#dragOverEffectOver" opacity="0.0" prefHeight="264.0" prefWidth="304.0" style="-fx-background-color: #55DEA7; -fx-border-color: #ffffff;" textFill="WHITE" visible="false">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

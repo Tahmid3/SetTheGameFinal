@@ -16,7 +16,6 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -32,10 +31,14 @@ public class GamePanel {
     LinkedHashMap<ImageView, Card> clickedSet = new LinkedHashMap<>(); //Karten mit den dazugehörigen Views, die angeklickt sind
     LinkedHashMap<ImageView, Card> cardDeck = new LinkedHashMap<>(); //Aktuell aufgelegtes Kartendeck als Map
     LinkedList<ImageView> imageViews = new LinkedList<>(); //Alle Views, die bereits angeklickt sind
-    int i = 0; //Integer - zu den angeklicken Karten
+    int clickedCards = 0; //Integer - zu den angeklicken Karten
     int foundSets = 0; // Integer für die gefundenen Sets
+    int score = 0;
+    int scoreInt = 0;
+    int skipInt=0;
 
     boolean sorted = false;
+    boolean skipClickable = false;
 
     @FXML
     ChoiceBox box;
@@ -94,6 +97,15 @@ public class GamePanel {
     ImageView i12;
 
     @FXML
+    ImageView remainingCardsView;
+
+    @FXML
+    ImageView trayStackView;
+
+    @FXML
+    ImageView skipView;
+
+    @FXML
     Label l; // Deklaration des Überschrift
 
     @FXML
@@ -115,6 +127,15 @@ public class GamePanel {
     Label nameLabel; // Deklaration des Labels für den eingegebenen Namen
 
     @FXML
+    Label scoreLabel;
+
+    @FXML
+    Label trayStack;
+
+    @FXML
+    Label skipLabel;
+
+    @FXML
     Button skip; // SKIP - Button im Spiel
 
     @FXML
@@ -130,13 +151,13 @@ public class GamePanel {
                 view.setEffect(cardShadow()); //Wird die Karte entwählt...also der Schatten wird zurückgesetzt
                 clickedSet.remove(view); //Die Karte wird aus set mit den aktuell angeklickten Karten entfernt
                 imageViews.remove(view);
-                i--; //Die angeklickte Anzahl der Karten wird um 1 nach unten gesetzt
+                clickedCards--; //Die angeklickte Anzahl der Karten wird um 1 nach unten gesetzt
             } else { //sonst (also wenn die Karte noch nicht in dem Set ist)
                 clickedSet.put(view, cardDeck.get(view)); //
                 imageViews.add(view); //
-                i++; //Zählvar. um 1 nach oben
+                clickedCards++; //Zählvar. um 1 nach oben
                 view.setEffect(setMarkedCard()); //Effekt der Makierten Karte wird gesetzt
-                if (i == 3) { // Wenn 3 Karten ausgewählt sind...
+                if (clickedCards == 3) { // Wenn 3 Karten ausgewählt sind...
 
                     ImageView image1 = imageViews.get(0); // Die ausgewählten Images werden unter den Variabelen image1,image2 und image3 gespeichert
                     ImageView image2 = imageViews.get(1);
@@ -176,11 +197,19 @@ public class GamePanel {
 
                                 foundSets++; // Gefundene Sets um 1 nach oben
                                 foundSetsLabel.setText("" + foundSets);
+                                if((300-scoreInt)>0) {
+                                    score=score+(300-scoreInt);
+                                    if(sorted==true) {
+                                        score=(score*3)/4;
+                                    }
+                                }
+                                scoreLabel.setText(score + "");
+                                scoreInt=0;
                             } else {
                                 setCardShadow(image1, image2, image3); // Kartenschatten wird auf allen 3 Images wieder zurückgesetzt
                                 clickedSet.clear(); // clickedSet wird gecleared
                                 imageViews.clear(); // Image Views werden geleared
-                                i = 0; // Ausgewählten Karten werden auf 0 zurückgesetzt
+                                clickedCards = 0; // Ausgewählten Karten werden auf 0 zurückgesetzt
 
                             }
                             g.setClickable(true);
@@ -193,6 +222,7 @@ public class GamePanel {
     }
 
     public void onCLickSkip(Event event) throws IOException{ //Fehler mit der helpList
+        scoreInt=0;
         LinkedList<ImageView> helpList = new LinkedList<>();
         g.getPossibleSets();
         for(ImageView view : cardDeck.keySet()) {
@@ -257,10 +287,14 @@ public class GamePanel {
     }
 
     public void refreshGamePanel() throws IOException {
+        skipInt++;
+        skipLabel.setText(skipInt+"");
+        scoreInt=0;
         if(g.getRemainingCards().size()>11) {
             g.getGameDeck().clear();
             addTwelveNewCards();
             cardsRemainingLabel.setText(g.getRemainingCards().size() + "");
+            trayStack.setText((69-g.getRemainingCards().size()) + "");
             possibleSetsLabel.setText("" + g.getPossibleSets());
             g.getExampleSet().clear();
             if(g.getPossibleSets()==0) {
@@ -374,11 +408,12 @@ public class GamePanel {
             possibleSetsLabel.setText(g.getPossibleSets() + ""); // Possibe Sets wird gepudatet
             g.getExampleSet().clear();
             cardsRemainingLabel.setText(g.getRemainingCards().size() + ""); // Remainig Cards wird gepudatet
+            trayStack.setText((69-g.getRemainingCards().size()) + "");
             setCardShadow(image1, image2, image3); // Kartenschatten wird auf allen 3 Images wieder zurückgesetzt
             clickedSet.clear(); // clickedSet wird gecleared
             imageViews.clear(); // Image Views werden geleared
             g.setClickable(true);
-            i=0;
+            clickedCards =0;
             if(g.getPossibleSets()==0) {
                 try {
                     g.getExampleSet().clear();
@@ -401,6 +436,9 @@ public class GamePanel {
             view.setVisible(false);
         }
         cardDeck.clear();
+        if(sorted==true) {
+            score=(3*score)/4;
+        }
     }
 
     public Effect cardShadow() {
@@ -454,7 +492,10 @@ public class GamePanel {
         return cardDeck;
     }
 
-    public void setLabels() {
+    public void setLabels() throws IOException {
+        remainingCardsView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/Card_backsite.png")), null));
+        trayStackView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/recycle_bin.png")), null));
+        skipView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/skip_image.png")), null));
         Timer timer = new Timer();
         Clock c = new Clock();
         timeLabel.setText("00:00:00");
@@ -464,13 +505,17 @@ public class GamePanel {
             @Override
             public void run() {
                 Platform.runLater(() -> {
+                    scoreInt++;
                     timeLabel.setText(c.timer());
                 });
             }
         }, 1000, 1000);
         nameLabel.setText(field.getText());
+        scoreLabel.setText(score + "");
+        skipLabel.setText(skipInt+"");
         foundSetsLabel.setText("0");
         cardsRemainingLabel.setText(g.getRemainingCards().size() + "");
+        trayStack.setText((69-g.getRemainingCards().size()) + "");
         possibleSetsLabel.setText("" + g.getPossibleSets());
         g.getExampleSet().clear();
     }

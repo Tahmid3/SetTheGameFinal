@@ -352,8 +352,7 @@ public class GamePanel {
             console.setText("This name is too long!");
         } else if (s.length() < 3) {
             console.setText("This name is too short!");
-        }
-        else {
+        } else {
             if (sortedCards.isSelected()) {
                 sorted = true;
             }
@@ -512,7 +511,9 @@ public class GamePanel {
         i2.setEffect(cardShadow());
         i3.setEffect(cardShadow());
     }
- Boolean sceneBoolean=true;
+
+    Boolean sceneBoolean = true;
+
     public void onMouseEnter() {
         if (onEnterBoolean == true) {
             box.getItems().add("Normal");
@@ -521,15 +522,15 @@ public class GamePanel {
 
             onEnterBoolean = false;
         }
-        if (sceneBoolean==true){
+        if (sceneBoolean == true) {
             boxFarbe.getItems().add("Default");
             boxFarbe.setValue("Default");
-            boxFarbe.getItems().add("Rot" );
+            boxFarbe.getItems().add("Rot");
             boxFarbe.getItems().add("Grün");
             boxFarbe.getItems().add("Blau");
             sceneBoolean = false;
         }
-        if (boxFarbe.getValue().equals("Rot")){//todo
+        if (boxFarbe.getValue().equals("Rot")) {//todo
             leftMenu.setStyle("-fx-background-color: #86001e");
             sideMenu.setStyle("-fx-background-color: #86001e");
             options.setStyle("-fx-background-color: #86001e");
@@ -593,7 +594,7 @@ public class GamePanel {
                             try {
                                 AnchorPane pane = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
                                 window.getChildren().setAll(pane);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
 

@@ -485,7 +485,7 @@ public class GamePanel {
 
     }
 
-    public void setEndScreen() {//todo
+    public void setEndScreen() {
         try {
             writeData();
         } catch (Exception e) {

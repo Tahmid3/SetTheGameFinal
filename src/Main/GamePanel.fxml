@@ -277,7 +277,7 @@
                   <Font size="28.0" />
                </font>
             </Label>
-            <Label fx:id="gameOverName" layoutX="699.0" layoutY="379.0" prefHeight="40.0" prefWidth="65.0" textFill="WHITE">
+            <Label fx:id="gameOverName" layoutX="699.0" layoutY="379.0" prefHeight="40.0" prefWidth="406.0" textFill="WHITE">
                <font>
                   <Font size="28.0" />
                </font>

@@ -568,8 +568,16 @@ public class GamePanel {
                         timeLabel.setText(timer);
                     } else {
                         String normal = c.start();
-                        if (normal.equals("10:00:00")) {
-                            setEndScreen();
+                        if (normal.equals("02:00:00")) {
+                            try {
+                                AnchorPane pane = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+                                window.getChildren().setAll(pane);
+                            }catch (Exception e){
+                                System.out.println(e.getMessage());
+                            }
+
+
+                            //setEndScreen();
                         }
                         timeLabel.setText(normal);
                     }

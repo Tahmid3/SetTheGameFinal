@@ -3,14 +3,17 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="window" onMouseEntered="#onMouseEnter" prefHeight="900.0" prefWidth="1280.0" style="-fx-background-color: #35374C;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.RulesPanel">
    <children>
-      <Label alignment="CENTER" layoutX="524.0" layoutY="131.0" prefHeight="56.0" prefWidth="244.0" text="Rules" textFill="WHITE">
+      <Label alignment="CENTER" layoutX="524.0" layoutY="59.0" prefHeight="56.0" prefWidth="244.0" text="Rules" textFill="WHITE">
          <font>
             <Font size="39.0" />
          </font>
@@ -18,9 +21,6 @@
             <DropShadow height="0.0" offsetX="1.0" offsetY="2.0" radius="0.0" width="0.0" />
          </effect>
       </Label>
-      <ImageView fx:id="i1" fitHeight="65.0" fitWidth="50.0" layoutX="116.0" layoutY="277.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="i2" fitHeight="65.0" fitWidth="50.0" layoutX="116.0" layoutY="376.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="i3" fitHeight="65.0" fitWidth="50.0" layoutX="116.0" layoutY="481.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
       <Button fx:id="backToMenu" mnemonicParsing="false" onAction="#onClickBackToMenu" prefHeight="65.0" prefWidth="176.0" style="-fx-background-color: #35374C;" text="&lt; Back to Main Menu" textFill="WHITE">
          <font>
             <Font size="15.0" />
@@ -29,5 +29,35 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
+      <TextArea editable="false" layoutX="63.0" layoutY="152.0" prefHeight="648.0" prefWidth="1166.0" style="-fx-background-color: violet;" text="Ziel des Spiels ist es nun ein „Set“ bestehend aus drei Karten zu finden, wobei alle Merkmale EINE der folgende Voraussetzungen zu erfüllen haben:&#10;•&#9;Das Merkmal hat auf allen drei Karten die gleiche Ausprägung (bspw. haben alle drei Karten rote Symbole)&#10;•&#9;Das Merkmal hat auf allen drei Karten eine unterschiedliche Ausprägung (bspw. hat eine Karte ein Symbol, die zweite zwei Symbole und die dritte drei Symbole)&#10;Keine Sets sind somit alle Kombinationen aus drei Karten, bei denen genau zwei der drei Karten eine gleiche Ausprägung eines Merkmals haben. Nach dem lokalisieren eines Sets werden die entsprechenden Karten entfernt und durch drei neue Karten ersetzt.&#10;Es gibt verschiedene Spielmod. Hier kann man zwischen zwei Varianten unterscheiden:&#10;•&#9;Normaler Spielmodus: Es wird solange gespielt bis das verbleibende Kartendeck erschöpft und kein Set mehr vorhanden ist. Nach 10 Stunden wird jedoch das Spiel abgebrochen.&#10;•&#9;Zeitmodus: Es gibt eine begrenzte Zeit in der so viele Sets wie möglich gefunden werden müssen.&#10;&#10;Falls kein Set unter den 12 aufgedeckten Karten zu finden ist, werden die Karten auf den Ablagestapel gelegt und es kommen die nächsten 12 Karten des Decks  ins Spiel.&#10;Symbole:" wrapText="true">
+         <font>
+            <Font name="Calibri" size="24.0" />
+         </font>
+         <effect>
+            <Blend />
+         </effect>
+      </TextArea>
+      <Pane layoutX="140.0" layoutY="693.0" prefHeight="98.0" prefWidth="1077.0">
+         <children>
+            <ImageView fx:id="i1" fitHeight="65.0" fitWidth="50.0" layoutX="14.0" layoutY="17.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
+            <Label alignment="CENTER" layoutX="80.0" layoutY="21.0" prefHeight="56.0" prefWidth="244.0" text="Übrige Karten im Deck">
+               <font>
+                  <Font name="Calibri" size="24.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="417.0" layoutY="22.0" prefHeight="56.0" prefWidth="244.0" text="Neues Spielfeld">
+               <font>
+                  <Font name="Calibri" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="i2" fitHeight="65.0" fitWidth="50.0" layoutX="389.0" layoutY="29.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="i3" fitHeight="65.0" fitWidth="50.0" layoutX="703.0" layoutY="29.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
+            <Label alignment="CENTER" layoutX="771.0" layoutY="23.0" prefHeight="56.0" prefWidth="160.0" text="Geskippte Sets">
+               <font>
+                  <Font name="Calibri" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

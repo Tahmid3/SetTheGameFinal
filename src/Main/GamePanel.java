@@ -46,6 +46,8 @@ public class GamePanel {
 
     @FXML
     Pane endPane;
+    @FXML
+    Pane rules;
 
     @FXML
     Pane leftMenu;
@@ -72,6 +74,15 @@ public class GamePanel {
     TextField field; //Deklaration des Textfeldes für die Namenseingabe
 
     //Folgend kommt die Deklaration der ImageViews
+
+    @FXML
+    ImageView ii1;
+
+    @FXML
+    ImageView ii2;
+
+    @FXML
+    ImageView ii3;
 
     @FXML
     ImageView i1;
@@ -169,6 +180,12 @@ public class GamePanel {
     @FXML
     Button gameOverBackToMenu;
 
+    public void loadRulesImage() throws Exception {
+        ii1.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/Card_backsite.png")), null));
+        ii2.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/recycle_bin.png")), null));
+        ii3.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/skip_image.png")), null));
+    }
+
     public void onClick(Event event) throws IOException { // Die Methode wird immer dann aufgerufen, wenn eine Karte angeklickt wird
         if (g.isClickable()) { //Wenn die Karte anklickbar ist (Sie ist nur dann nicht anklickbar, während der 2,5 Sekunden in denen ein Beispielset angezeigt wird)
             ImageView view = (ImageView) event.getSource(); //Das angeklickte "Bild" wird sich über das event geholt
@@ -197,7 +214,7 @@ public class GamePanel {
 
                                 Thread.sleep(1000);
                             } catch (InterruptedException ex) {
-
+                                ex.printStackTrace();
                             }
                             return null;
                         }
@@ -214,7 +231,7 @@ public class GamePanel {
                                     score = score + (((300 - scoreInt) * (300 - scoreInt)) / (900 * Integer.parseInt(possibleSetsLabel.getText())));
                                     System.out.println(Integer.parseInt(possibleSetsLabel.getText()));
                                     g.getExampleSet().clear();
-                                    if (sorted == true) {
+                                    if (sorted) {
                                         score = (score * 3) / 4;
                                     }
                                 }
@@ -229,7 +246,7 @@ public class GamePanel {
                                     try {
                                         refreshGamePanel();
                                     } catch (IOException ex) {
-
+                                        ex.printStackTrace();
                                     }
                                     g.getExampleSet().clear();
                                 }
@@ -250,7 +267,7 @@ public class GamePanel {
     }
 
     public void onCLickSkip(Event event) throws IOException { //Fehler mit der helpList
-        if (skipClickable == true) {
+        if (skipClickable) {
             skipClickable = false;
             scoreInt = 0;
             LinkedList<ImageView> helpList = new LinkedList<>();
@@ -273,7 +290,7 @@ public class GamePanel {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
-
+                        ex.printStackTrace();
                     }
                     return null;
                 }
@@ -304,7 +321,7 @@ public class GamePanel {
                             g.getExampleSet().clear();
                             refreshGamePanel();
                         } catch (IOException ex) {
-
+                            ex.printStackTrace();
                         }
                     }
 
@@ -337,7 +354,7 @@ public class GamePanel {
                     g.getExampleSet().clear();
                     refreshGamePanel();
                 } catch (IOException ex) {
-
+                    ex.printStackTrace();
                 }
             }
         } else {
@@ -347,6 +364,7 @@ public class GamePanel {
     }
 
     public void createFirstDeck() throws IOException {
+        rules.setVisible(false);
         String s = field.getText();
         if (s.length() > 16) {
             console.setText("This name is too long!");
@@ -390,7 +408,7 @@ public class GamePanel {
             Card c = g.getRemainingCards().pop();
             g.addCardToGameDeck(c);
         }
-        if (sorted == true) {
+        if (sorted) {
             g.sortList(g.getGameDeck());
         }
         for (ImageView imageView : cardDeck.keySet()) {
@@ -421,9 +439,9 @@ public class GamePanel {
                 image2.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c2.toString() + ".png")), null));
                 image3.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c3.toString() + ".png")), null));
             } catch (IOException ex) {
-
+                ex.printStackTrace();
             }
-            if (sorted == true) {
+            if (sorted) {
                 cardDeck.clear();
                 g.sortList(g.getGameDeck());
                 int counter = 0;
@@ -434,7 +452,7 @@ public class GamePanel {
                     try {
                         imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c.toString() + ".png")), null));
                     } catch (IOException ex) {
-
+                        ex.printStackTrace();
                     }
 
                     counter++;
@@ -454,7 +472,7 @@ public class GamePanel {
                     g.getExampleSet().clear();
                     refreshGamePanel();
                 } catch (IOException ex) {
-
+                    ex.printStackTrace();
                 }
 
             }
@@ -514,15 +532,16 @@ public class GamePanel {
 
     Boolean sceneBoolean = true;
 
-    public void onMouseEnter() {
-        if (onEnterBoolean == true) {
+    public void onMouseEnter()throws Exception {
+        loadRulesImage();
+        if (onEnterBoolean) {
             box.getItems().add("Normal");
             box.setValue("Normal");
             box.getItems().add("Time");
 
             onEnterBoolean = false;
         }
-        if (sceneBoolean == true) {
+        if (sceneBoolean) {
             boxFarbe.getItems().add("Default");
             boxFarbe.setValue("Default");
             boxFarbe.getItems().add("Rot");
@@ -532,21 +551,20 @@ public class GamePanel {
         }
         String rot = "-fx-background-color: #86001e";
         String rot2 = "-fx-background-color: #86001e; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4";
-        String color1;
-        if (boxFarbe.getValue().equals("Rot")) {//todo
-            setBackgroundColor(rot,rot2);
-        }else if (boxFarbe.getValue().equals("Grün")){
+
+        if (boxFarbe.getValue().equals("Rot")) {
+            setBackgroundColor(rot, rot2);
+        } else if (boxFarbe.getValue().equals("Grün")) {
             //#115d06
-            setBackgroundColor("-fx-background-color: #115d06","-fx-background-color: #115d06; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
+            setBackgroundColor("-fx-background-color: #115d06", "-fx-background-color: #115d06; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
 
-        }else if (boxFarbe.getValue().equals("Blau")){
+        } else if (boxFarbe.getValue().equals("Blau")) {
             //#04074b
-            setBackgroundColor("-fx-background-color: #04074b","-fx-background-color: #04074b; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
+            setBackgroundColor("-fx-background-color: #04074b", "-fx-background-color: #04074b; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
 
-        }
-        else if (boxFarbe.getValue().equals("Default")){
+        } else if (boxFarbe.getValue().equals("Default")) {
             //#35374C default
-            setBackgroundColor("-fx-background-color: #35374C","-fx-background-color: #35374C; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
+            setBackgroundColor("-fx-background-color: #35374C", "-fx-background-color: #35374C; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
 
         }
 

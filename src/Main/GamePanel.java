@@ -530,17 +530,37 @@ public class GamePanel {
             boxFarbe.getItems().add("Blau");
             sceneBoolean = false;
         }
+        String rot = "-fx-background-color: #86001e";
+        String rot2 = "-fx-background-color: #86001e; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4";
+        String color1;
         if (boxFarbe.getValue().equals("Rot")) {//todo
-            leftMenu.setStyle("-fx-background-color: #86001e");
-            sideMenu.setStyle("-fx-background-color: #86001e");
-            options.setStyle("-fx-background-color: #86001e");
-            endPane.setStyle("-fx-background-color: #86001e");
-            menuButton.setStyle("-fx-background-color: #86001e");
-            gameOverBackToMenu.setStyle("-fx-background-color: #86001e; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
-            start.setStyle("-fx-background-color: #86001e; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
-            skip.setStyle("-fx-background-color: #86001e; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
+            setBackgroundColor(rot,rot2);
+        }else if (boxFarbe.getValue().equals("Grün")){
+            //#115d06
+            setBackgroundColor("-fx-background-color: #115d06","-fx-background-color: #115d06; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
+
+        }else if (boxFarbe.getValue().equals("Blau")){
+            //#04074b
+            setBackgroundColor("-fx-background-color: #04074b","-fx-background-color: #04074b; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
+
+        }
+        else if (boxFarbe.getValue().equals("Default")){
+            //#35374C default
+            setBackgroundColor("-fx-background-color: #35374C","-fx-background-color: #35374C; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
+
         }
 
+    }
+
+    private void setBackgroundColor(String color1, String color2) {
+        leftMenu.setStyle(color1);
+        sideMenu.setStyle(color1);
+        options.setStyle(color1);
+        endPane.setStyle(color1);
+        menuButton.setStyle(color1);
+        gameOverBackToMenu.setStyle(color2);
+        start.setStyle(color2);
+        skip.setStyle(color2);
     }
 
     private LinkedHashMap<ImageView, Card> createCardDeckMap() {

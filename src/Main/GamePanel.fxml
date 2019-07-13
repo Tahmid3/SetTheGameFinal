@@ -145,23 +145,23 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="53.0" layoutY="28.0" text="Mode" textFill="WHITE">
+                  <Label layoutY="22.0" text="Mode" textFill="WHITE">
                      <font>
                         <Font size="36.0" />
                      </font>
                   </Label>
-                  <ChoiceBox fx:id="box" layoutX="25.0" layoutY="88.0" prefWidth="150.0" />
-                  <CheckBox fx:id="sortedCards" layoutX="64.0" layoutY="203.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="71.0" text="Sorted" textFill="WHITE">
+                  <ChoiceBox fx:id="box" layoutY="87.0" prefHeight="31.0" prefWidth="200.0" />
+                  <CheckBox fx:id="sortedCards" layoutY="148.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="71.0" text="Sorted" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </CheckBox>
-                  <Label layoutX="15.0" layoutY="330.0" text="Color schema" textFill="WHITE">
+                  <Label layoutX="-2.0" layoutY="326.0" text="Color Theme" textFill="WHITE">
                      <font>
                         <Font size="36.0" />
                      </font>
                   </Label>
-                  <ChoiceBox fx:id="boxFarbe" layoutX="25.0" layoutY="400" prefWidth="150.0" />
+                  <ChoiceBox fx:id="boxFarbe" layoutY="399.0" prefHeight="31.0" prefWidth="200.0" />
 
                </children>
             </Pane>

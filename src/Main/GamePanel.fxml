@@ -156,6 +156,13 @@
                         <Font size="14.0" />
                      </font>
                   </CheckBox>
+                  <Label layoutX="15.0" layoutY="330.0" text="Color schema" textFill="WHITE">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="boxFarbe" layoutX="25.0" layoutY="400" prefWidth="150.0" />
+
                </children>
             </Pane>
             <Label fx:id="console" alignment="CENTER" contentDisplay="CENTER" layoutX="39.0" layoutY="690.0" prefHeight="35.0" prefWidth="206.0" textFill="RED" />

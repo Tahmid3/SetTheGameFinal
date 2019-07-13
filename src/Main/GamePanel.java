@@ -17,6 +17,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -51,6 +52,9 @@ public class GamePanel {
 
     @FXML
     ChoiceBox box;
+
+    @FXML
+    ChoiceBox boxFarbe;
 
     @FXML
     CheckBox sortedCards;
@@ -510,13 +514,29 @@ public class GamePanel {
         i2.setEffect(cardShadow());
         i3.setEffect(cardShadow());
     }
-
+ Boolean sceneBoolean=true;
     public void onMouseEnter() {
         if (onEnterBoolean == true) {
-            box.getItems().add("Time");
             box.getItems().add("Normal");
-            System.out.println("Test");
+            box.setValue("Normal");
+            box.getItems().add("Time");
+
             onEnterBoolean = false;
+        }
+        if (sceneBoolean==true){
+            boxFarbe.getItems().add("Default");
+            boxFarbe.setValue("Default");
+            boxFarbe.getItems().add("Rot" );
+            boxFarbe.getItems().add("Grün");
+            boxFarbe.getItems().add("Blau");
+            sceneBoolean = false;
+        }
+        if (boxFarbe.getValue().equals("Rot")){//todo
+            leftMenu.setStyle("-fx-background-color: #86001e");
+            sideMenu.setStyle("-fx-background-color: #86001e");
+            options.setStyle("-fx-background-color: #86001e");
+            endPane.setStyle("-fx-background-color: #86001e");
+            start.setStyle("-fx-background-color: #86001e; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
         }
 
     }

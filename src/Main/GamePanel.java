@@ -352,9 +352,7 @@ public class GamePanel {
             console.setText("This name is too long!");
         } else if (s.length() < 3) {
             console.setText("This name is too short!");
-        } //else if(!box.isShowing()) {
-        // console.setText("Please choose a Mode!");
-        //}
+        }
         else {
             if (sortedCards.isSelected()) {
                 sorted = true;
@@ -536,7 +534,10 @@ public class GamePanel {
             sideMenu.setStyle("-fx-background-color: #86001e");
             options.setStyle("-fx-background-color: #86001e");
             endPane.setStyle("-fx-background-color: #86001e");
+            menuButton.setStyle("-fx-background-color: #86001e");
+            gameOverBackToMenu.setStyle("-fx-background-color: #86001e; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
             start.setStyle("-fx-background-color: #86001e; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
+            skip.setStyle("-fx-background-color: #86001e; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
         }
 
     }
@@ -615,14 +616,4 @@ public class GamePanel {
         g.getExampleSet().clear();
     }
 
-    public void dragOverEffect(Event event) {
-        ImageView b = (ImageView) event.getSource();
-
-        b.setEffect(null);
-    }
-
-    public void dragOverEffectOver(Event event) {
-        ImageView b = (ImageView) event.getSource();
-        b.setEffect(cardShadow());
-    }
 }

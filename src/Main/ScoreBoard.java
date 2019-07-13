@@ -10,6 +10,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 public class ScoreBoard implements Initializable {
@@ -24,9 +28,6 @@ public class ScoreBoard implements Initializable {
     private TableView<Score> table;
 
     @FXML
-    public TableColumn<Score, Integer> rank;
-
-    @FXML
     public TableColumn<Score, String> name;
 
     @FXML
@@ -34,17 +35,26 @@ public class ScoreBoard implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        rank.setCellValueFactory(new PropertyValueFactory<>("Rank"));
         name.setCellValueFactory(new PropertyValueFactory<>("Name"));
         score.setCellValueFactory(new PropertyValueFactory<>("Score"));
-        add();
-
-
+        try {
+            add();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void add() {
-        for(int i=0;i<10;i++) {
-            table.getItems().add(new Score(i,"a",100+i));
+    public void add() throws Exception {
+        Path path = FileSystems.getDefault().getPath("assets", "ScoreBoard.txt");
+        String content = Files.readString(path, StandardCharsets.UTF_8);
+        String[] game = content.split("\\;");
+
+
+        for (String s:game) {
+            String[] userData = s.split("\\-");
+            table.getItems().add(new Score(userData[0],Integer.parseInt(userData[1])));
+            score.setSortType(TableColumn.SortType.DESCENDING);
+            table.getSortOrder().add(score);
         }
     }
 

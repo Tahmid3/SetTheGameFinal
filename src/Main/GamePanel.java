@@ -22,6 +22,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.IllegalCharsetNameException;
 import java.util.*;
@@ -179,6 +180,8 @@ public class GamePanel {
 
     @FXML
     Button gameOverBackToMenu;
+
+    ScoreBoard sb = new ScoreBoard();
 
     public void loadRulesImage() throws Exception {
         ii1.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/Card_backsite.png")), null));
@@ -340,7 +343,7 @@ public class GamePanel {
 
     public void refreshGamePanel() throws IOException {
         skipInt++;
-        skipLabel.setText(skipInt + "");
+        skipLabel.setText(skipInt * 12 + "");
         scoreInt = 0;
         if (g.getRemainingCards().size() > 11) {
             g.getGameDeck().clear();
@@ -482,7 +485,12 @@ public class GamePanel {
 
     }
 
-    public void setEndScreen() {
+    public void setEndScreen() {//todo
+        try {
+            writeData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         endPane.setVisible(true);
         skip.setVisible(false);
         leftMenu.setVisible(false);
@@ -493,6 +501,15 @@ public class GamePanel {
         gameOverFoundSets.setText(foundSets + "");
         gameOverName.setText(nameLabel.getText());
         gameOverScore.setText(score + "");
+    }
+
+    public void writeData() throws Exception {
+
+        File file = new File("assets/ScoreBoard.txt");
+        FileWriter fr = new FileWriter(file, true);
+        fr.write(nameLabel.getText()+"-"+score+";");
+        fr.close();
+
     }
 
     public Effect cardShadow() {
@@ -532,7 +549,7 @@ public class GamePanel {
 
     Boolean sceneBoolean = true;
 
-    public void onMouseEnter()throws Exception {
+    public void onMouseEnter() throws Exception {
         loadRulesImage();
         if (onEnterBoolean) {
             box.getItems().add("Normal");
@@ -647,7 +664,7 @@ public class GamePanel {
         }, 1000, 1000);
         nameLabel.setText(field.getText());
         scoreLabel.setText(score + "");
-        skipLabel.setText(skipInt + "");
+        skipLabel.setText(skipInt * 12 + "");
         foundSetsLabel.setText("0");
         cardsRemainingLabel.setText(g.getRemainingCards().size() + "");
         trayStack.setText((69 - g.getRemainingCards().size()) + "");

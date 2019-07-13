@@ -46,6 +46,10 @@ public class MainMenu {
         AnchorPane pane = FXMLLoader.load(getClass().getResource("ScoreBoard.fxml"));
         window.getChildren().setAll(pane);
     }
+    public void onClickRules() throws Exception {
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("RulesPanel.fxml"));
+        window.getChildren().setAll(pane);
+    }
 
 
     public void onClickEnd() {

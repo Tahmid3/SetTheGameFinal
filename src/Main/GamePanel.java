@@ -37,7 +37,7 @@ public class GamePanel {
     int foundSets = 0; // Integer für die gefundenen Sets
     int score = 0;
     int scoreInt = 0;
-    int skipInt=0;
+    int skipInt = 0;
 
     boolean sorted = false;
     boolean skipClickable = true;
@@ -166,7 +166,7 @@ public class GamePanel {
     Button gameOverBackToMenu;
 
     public void onClick(Event event) throws IOException { // Die Methode wird immer dann aufgerufen, wenn eine Karte angeklickt wird
-        if(g.isClickable()) { //Wenn die Karte anklickbar ist (Sie ist nur dann nicht anklickbar, während der 2,5 Sekunden in denen ein Beispielset angezeigt wird)
+        if (g.isClickable()) { //Wenn die Karte anklickbar ist (Sie ist nur dann nicht anklickbar, während der 2,5 Sekunden in denen ein Beispielset angezeigt wird)
             ImageView view = (ImageView) event.getSource(); //Das angeklickte "Bild" wird sich über das event geholt
             if (clickedSet.keySet().contains(view)) { //Wenn die Map, in der nur die aktuell angeklickten Karten - mit ihren dazugehörigen Images - drin sind, die aktuell angeklickte Karte bereits enthält...
                 view.setEffect(cardShadow()); //Wird die Karte entwählt...also der Schatten wird zurückgesetzt
@@ -192,7 +192,7 @@ public class GamePanel {
                                 g.setClickable(false);
 
                                 Thread.sleep(1000);
-                            } catch(InterruptedException ex) {
+                            } catch (InterruptedException ex) {
 
                             }
                             return null;
@@ -204,26 +204,25 @@ public class GamePanel {
                             if (g.checkSet(clickedSet.get(image1), clickedSet.get(image2), clickedSet.get(image3))) { // Wenn die ausgewählten Karten ein Set sind...
 
 
-
                                 foundSets++; // Gefundene Sets um 1 nach oben
                                 foundSetsLabel.setText("" + foundSets);
-                                if((300-scoreInt)>0) {
-                                    score=score+(((300-scoreInt)*(300-scoreInt))/(900*Integer.parseInt(possibleSetsLabel.getText())));
+                                if ((300 - scoreInt) > 0) {
+                                    score = score + (((300 - scoreInt) * (300 - scoreInt)) / (900 * Integer.parseInt(possibleSetsLabel.getText())));
                                     System.out.println(Integer.parseInt(possibleSetsLabel.getText()));
                                     g.getExampleSet().clear();
-                                    if(sorted==true) {
-                                        score=(score*3)/4;
+                                    if (sorted == true) {
+                                        score = (score * 3) / 4;
                                     }
                                 }
                                 scoreLabel.setText(score + "");
-                                scoreInt=0;
+                                scoreInt = 0;
                                 g.removeCardFromGameDeck(clickedSet.get(image1)); // Karten werden aus dem Spieldeck entfernt
                                 g.removeCardFromGameDeck(clickedSet.get(image2));
                                 g.removeCardFromGameDeck(clickedSet.get(image3));
-                                setThreeNewCards(image1,image2,image3);
+                                setThreeNewCards(image1, image2, image3);
 
-                                if(g.getPossibleSets()==0) {
-                                    try{
+                                if (g.getPossibleSets() == 0) {
+                                    try {
                                         refreshGamePanel();
                                     } catch (IOException ex) {
 
@@ -246,8 +245,8 @@ public class GamePanel {
         }
     }
 
-    public void onCLickSkip(Event event) throws IOException{ //Fehler mit der helpList
-        if(skipClickable==true) {
+    public void onCLickSkip(Event event) throws IOException { //Fehler mit der helpList
+        if (skipClickable == true) {
             skipClickable = false;
             scoreInt = 0;
             LinkedList<ImageView> helpList = new LinkedList<>();
@@ -320,16 +319,16 @@ public class GamePanel {
 
     public void refreshGamePanel() throws IOException {
         skipInt++;
-        skipLabel.setText(skipInt+"");
-        scoreInt=0;
-        if(g.getRemainingCards().size()>11) {
+        skipLabel.setText(skipInt + "");
+        scoreInt = 0;
+        if (g.getRemainingCards().size() > 11) {
             g.getGameDeck().clear();
             addTwelveNewCards();
             cardsRemainingLabel.setText(g.getRemainingCards().size() + "");
-            trayStack.setText((69-g.getRemainingCards().size()) + "");
+            trayStack.setText((69 - g.getRemainingCards().size()) + "");
             possibleSetsLabel.setText("" + g.getPossibleSets());
             g.getExampleSet().clear();
-            if(g.getPossibleSets()==0) {
+            if (g.getPossibleSets() == 0) {
                 try {
                     g.getExampleSet().clear();
                     refreshGamePanel();
@@ -350,23 +349,23 @@ public class GamePanel {
         } else if (s.length() < 3) {
             console.setText("This name is too short!");
         } //else if(!box.isShowing()) {
-           // console.setText("Please choose a Mode!");
+        // console.setText("Please choose a Mode!");
         //}
         else {
-            if(sortedCards.isSelected()) {
-                sorted=true;
+            if (sortedCards.isSelected()) {
+                sorted = true;
             }
-                options.setVisible(false);
-                console.setVisible(false);
-                Game g = new Game();
-                this.g = g;
+            options.setVisible(false);
+            console.setVisible(false);
+            Game g = new Game();
+            this.g = g;
 
-                g.createDeck();
-                g.mixCards();
-                createCardDeckMap();
-            if(g.getRemainingCards().size()>11) {
+            g.createDeck();
+            g.mixCards();
+            createCardDeckMap();
+            if (g.getRemainingCards().size() > 11) {
                 addTwelveNewCards();
-                if(g.getPossibleSets()==0) {
+                if (g.getPossibleSets() == 0) {
                     g.getExampleSet().clear();
                     refreshGamePanel();
                 }
@@ -384,13 +383,13 @@ public class GamePanel {
 
     }
 
-    public void addTwelveNewCards() throws IOException{
+    public void addTwelveNewCards() throws IOException {
         int counter = 0;
-        for (int i=0; i<12;i++) {
+        for (int i = 0; i < 12; i++) {
             Card c = g.getRemainingCards().pop();
             g.addCardToGameDeck(c);
         }
-        if(sorted==true) {
+        if (sorted == true) {
             g.sortList(g.getGameDeck());
         }
         for (ImageView imageView : cardDeck.keySet()) {
@@ -403,7 +402,7 @@ public class GamePanel {
     }
 
     public void setThreeNewCards(ImageView image1, ImageView image2, ImageView image3) {
-        if(g.getRemainingCards().size()>2) {
+        if (g.getRemainingCards().size() > 2) {
             Card c1 = g.getRemainingCards().pop(); // Es werden duch c1,c2,c3 3 neue Karten vom "Stapel" abgehoben
             Card c2 = g.getRemainingCards().pop();
             Card c3 = g.getRemainingCards().pop();
@@ -416,14 +415,14 @@ public class GamePanel {
             g.addCardToGameDeck(c1); // Die Karten werden auch in der externen Liste in Spieldeck aufgenommen
             g.addCardToGameDeck(c2);
             g.addCardToGameDeck(c3);
-            try{
+            try {
                 image1.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c1.toString() + ".png")), null)); // Diese Karten werde über den Befehl angezeigt
                 image2.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c2.toString() + ".png")), null));
                 image3.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c3.toString() + ".png")), null));
             } catch (IOException ex) {
 
             }
-            if(sorted==true) {
+            if (sorted == true) {
                 cardDeck.clear();
                 g.sortList(g.getGameDeck());
                 int counter = 0;
@@ -443,13 +442,13 @@ public class GamePanel {
             possibleSetsLabel.setText(g.getPossibleSets() + ""); // Possibe Sets wird gepudatet
             g.getExampleSet().clear();
             cardsRemainingLabel.setText(g.getRemainingCards().size() + ""); // Remainig Cards wird gepudatet
-            trayStack.setText((69-g.getRemainingCards().size()) + "");
+            trayStack.setText((69 - g.getRemainingCards().size()) + "");
             setCardShadow(image1, image2, image3); // Kartenschatten wird auf allen 3 Images wieder zurückgesetzt
             clickedSet.clear(); // clickedSet wird gecleared
             imageViews.clear(); // Image Views werden geleared
             g.setClickable(true);
-            clickedCards =0;
-            if(g.getPossibleSets()==0) {
+            clickedCards = 0;
+            if (g.getPossibleSets() == 0) {
                 try {
                     g.getExampleSet().clear();
                     refreshGamePanel();
@@ -468,7 +467,7 @@ public class GamePanel {
         endPane.setVisible(true);
         skip.setVisible(false);
         leftMenu.setVisible(false);
-        for(ImageView view : cardDeck.keySet()) {
+        for (ImageView view : cardDeck.keySet()) {
             view.setVisible(false);
         }
         cardDeck.clear();
@@ -513,11 +512,11 @@ public class GamePanel {
     }
 
     public void onMouseEnter() {
-        if(onEnterBoolean==true) {
+        if (onEnterBoolean == true) {
             box.getItems().add("Time");
             box.getItems().add("Normal");
             System.out.println("Test");
-            onEnterBoolean=false;
+            onEnterBoolean = false;
         }
 
     }
@@ -544,8 +543,12 @@ public class GamePanel {
         skipView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/skip_image.png")), null));
         Timer timer = new Timer();
         Clock c = new Clock();
+        for (ImageView iv : cardDeck.keySet()) {
+            iv.setVisible(true);
 
-        if(box.getValue()=="Time") {
+
+        }
+        if (box.getValue() == "Time") {
             c.setMinute2(5);
             timeLabel.setText("00:05:00");
         } else {
@@ -557,15 +560,15 @@ public class GamePanel {
             public void run() {
                 Platform.runLater(() -> {
                     scoreInt++;
-                    if(box.getValue()=="Time") {
+                    if (box.getValue() == "Time") {
                         String timer = c.timer();
-                        if(timer.equals("00:00:00")) {
+                        if (timer.equals("00:00:00")) {
                             setEndScreen();
                         }
                         timeLabel.setText(timer);
                     } else {
                         String normal = c.start();
-                        if(normal.equals("10:00:00")) {
+                        if (normal.equals("10:00:00")) {
                             setEndScreen();
                         }
                         timeLabel.setText(normal);
@@ -576,10 +579,10 @@ public class GamePanel {
         }, 1000, 1000);
         nameLabel.setText(field.getText());
         scoreLabel.setText(score + "");
-        skipLabel.setText(skipInt+"");
+        skipLabel.setText(skipInt + "");
         foundSetsLabel.setText("0");
         cardsRemainingLabel.setText(g.getRemainingCards().size() + "");
-        trayStack.setText((69-g.getRemainingCards().size()) + "");
+        trayStack.setText((69 - g.getRemainingCards().size()) + "");
         possibleSetsLabel.setText("" + g.getPossibleSets());
         g.getExampleSet().clear();
     }

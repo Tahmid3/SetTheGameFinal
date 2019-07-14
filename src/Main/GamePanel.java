@@ -346,9 +346,9 @@ public class GamePanel {
         window.getChildren().setAll(pane);
     }
 
-    public void refreshGamePanel() throws IOException {//todo
+    public void refreshGamePanel() throws IOException {
         skipInt++;
-        skipLabel.setText(skipped + "");
+        //skipLabel.setText(skipInt + "");
         scoreInt = 0;
         if (g.getRemainingCards().size() > 11) {
             g.getGameDeck().clear();

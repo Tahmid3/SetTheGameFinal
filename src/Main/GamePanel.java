@@ -61,6 +61,8 @@ public class GamePanel {
 
     @FXML
     CheckBox sortedCards;
+    @FXML
+    CheckBox cardset;
 
     @FXML
     AnchorPane window; // Deklaration des gesamten Fensters
@@ -418,7 +420,11 @@ public class GamePanel {
             Card c = g.getGameDeck().get(counter);
             imageView.setEffect(cardShadow());
             cardDeck.put(imageView, c);
-            imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c.toString() + ".png")), null));
+            if (!cardset.isSelected()) {
+                imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c.toString() + ".png")), null));
+            }else {
+                imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/CardsBlack/" + c.toString() + ".png")), null));
+            }
             counter++;
         }
     }
@@ -438,9 +444,16 @@ public class GamePanel {
             g.addCardToGameDeck(c2);
             g.addCardToGameDeck(c3);
             try {
-                image1.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c1.toString() + ".png")), null)); // Diese Karten werde über den Befehl angezeigt
-                image2.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c2.toString() + ".png")), null));
-                image3.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c3.toString() + ".png")), null));
+
+                if (!cardset.isSelected()) {
+                    image1.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c1.toString() + ".png")), null)); // Diese Karten werde über den Befehl angezeigt
+                    image2.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c2.toString() + ".png")), null));
+                    image3.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c3.toString() + ".png")), null));
+                } else {
+                    image1.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/CardsBlack/" + c1.toString() + ".png")), null)); // Diese Karten werde über den Befehl angezeigt
+                    image2.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/CardsBlack/" + c2.toString() + ".png")), null));
+                    image3.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/CardsBlack/" + c3.toString() + ".png")), null));
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -453,7 +466,12 @@ public class GamePanel {
                     imageView.setEffect(cardShadow());
                     cardDeck.put(imageView, c);
                     try {
-                        imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c.toString() + ".png")), null));
+                        if (!cardset.isSelected()) {
+                            imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c.toString() + ".png")), null));
+                        }else {
+                            imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/CardsBlack/" + c.toString() + ".png")), null));
+
+                        }
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -507,7 +525,7 @@ public class GamePanel {
 
         File file = new File("assets/ScoreBoard.txt");
         FileWriter fr = new FileWriter(file, true);
-        fr.write(nameLabel.getText()+"-"+score+";");
+        fr.write(nameLabel.getText() + "-" + score + ";");
         fr.close();
 
     }

@@ -159,6 +159,11 @@
                      </font>
                   </Label>
                   <ChoiceBox fx:id="boxFarbe" layoutY="399.0" prefHeight="31.0" prefWidth="200.0" />
+                  <CheckBox fx:id="cardset" layoutY="184.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="150.0" text="DARK card set" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </CheckBox>
 
                </children>
             </Pane>

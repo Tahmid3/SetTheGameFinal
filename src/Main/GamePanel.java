@@ -40,6 +40,7 @@ public class GamePanel {
     int score = 0;
     int scoreInt = 0;
     int skipInt = 0;
+    int skipped = 0;
 
     boolean sorted = false;
     boolean skipClickable = true;
@@ -234,7 +235,7 @@ public class GamePanel {
                                 foundSetsLabel.setText("" + foundSets);
                                 if ((300 - scoreInt) > 0) {
                                     score = score + (((300 - scoreInt) * (300 - scoreInt)) / (900 * Integer.parseInt(possibleSetsLabel.getText())));
-                                    System.out.println(Integer.parseInt(possibleSetsLabel.getText()));
+                                   // System.out.println(Integer.parseInt(possibleSetsLabel.getText()));
                                     g.getExampleSet().clear();
                                     if (sorted) {
                                         score = (score * 3) / 4;
@@ -274,6 +275,8 @@ public class GamePanel {
     public void onCLickSkip(Event event) throws IOException { //Fehler mit der helpList
         if (skipClickable) {
             skipClickable = false;
+            skipped++;
+            skipLabel.setText(skipped + "");
             scoreInt = 0;
             LinkedList<ImageView> helpList = new LinkedList<>();
             g.getPossibleSets();
@@ -343,9 +346,9 @@ public class GamePanel {
         window.getChildren().setAll(pane);
     }
 
-    public void refreshGamePanel() throws IOException {
+    public void refreshGamePanel() throws IOException {//todo
         skipInt++;
-        skipLabel.setText(skipInt * 12 + "");
+        skipLabel.setText(skipped + "");
         scoreInt = 0;
         if (g.getRemainingCards().size() > 11) {
             g.getGameDeck().clear();
@@ -401,10 +404,7 @@ public class GamePanel {
             } else {
                 setEndScreen();
             }
-
-
         }
-
     }
 
     public void addTwelveNewCards() throws IOException {
@@ -663,7 +663,7 @@ public class GamePanel {
                         timeLabel.setText(timer);
                     } else {
                         String normal = c.start();
-                        if (normal.equals("02:00:00")) {
+                        if (normal.equals("50:00:00")) {
                             try {
                                 AnchorPane pane = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
                                 window.getChildren().setAll(pane);
@@ -682,7 +682,7 @@ public class GamePanel {
         }, 1000, 1000);
         nameLabel.setText(field.getText());
         scoreLabel.setText(score + "");
-        skipLabel.setText(skipInt * 12 + "");
+        skipLabel.setText(skipped + "");
         foundSetsLabel.setText("0");
         cardsRemainingLabel.setText(g.getRemainingCards().size() + "");
         trayStack.setText((69 - g.getRemainingCards().size()) + "");

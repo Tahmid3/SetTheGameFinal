@@ -88,25 +88,20 @@
                   </Label>
                   <Separator layoutX="40.0" layoutY="408.0" prefHeight="3.0" prefWidth="120.0" />
                   <Separator layoutX="40.0" layoutY="486.0" prefHeight="3.0" prefWidth="120.0" />
-                  <ImageView fx:id="trayStackView" fitHeight="89.0" fitWidth="71.0" layoutX="68.0" layoutY="530.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="trayStackView" fitHeight="89.0" fitWidth="71.0" layoutX="73.0" layoutY="530.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
                   <Label fx:id="cardsRemainingLabel" alignment="CENTER" layoutX="1.0" layoutY="548.0" prefHeight="35.0" prefWidth="79.0" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="skipLabel" alignment="CENTER" layoutX="65.0" layoutY="548.0" prefHeight="35.0" prefWidth="79.0" textFill="WHITE">
+                  <Label fx:id="skipLabel" alignment="CENTER" layoutX="121.0" layoutY="548.0" prefHeight="35.0" prefWidth="79.0" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="trayStack" alignment="CENTER" layoutX="125.0" layoutY="548.0" prefHeight="35.0" prefWidth="79.0" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="17.0" />
-                     </font>
-                  </Label>
+                  <ImageView fx:id="skipView" fitHeight="71.0" fitWidth="79.0" layoutX="126.0" layoutY="530.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
                </children>
             </Pane>
-            <ImageView fx:id="skipView" fitHeight="71.0" fitWidth="79.0" layoutX="166.0" layoutY="614.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
             <Button fx:id="start" alignment="CENTER" contentDisplay="CENTER" layoutX="63.0" layoutY="747.0" mnemonicParsing="false" onAction="#createFirstDeck" prefHeight="65.0" prefWidth="150.0" style="-fx-background-color: #35374C; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4;" text="START" textFill="WHITE">
                <font>
                   <Font size="27.0" />
@@ -115,10 +110,6 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <TextField fx:id="field" alignment="CENTER" layoutX="39.0" layoutY="649.0" prefHeight="25.0" prefWidth="206.0" promptText="Please insert your name">
-               <font>
-                  <Font size="13.0" />
-               </font></TextField>
             <Button fx:id="skip" alignment="CENTER" contentDisplay="CENTER" layoutX="63.0" layoutY="747.0" mnemonicParsing="false" onAction="#onCLickSkip" prefHeight="65.0" prefWidth="150.0" style="-fx-background-color: #35374C; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4;" text="SKIP" textFill="WHITE" visible="false">
                <font>
                   <Font size="27.0" />
@@ -168,6 +159,16 @@
                </children>
             </Pane>
             <Label fx:id="console" alignment="CENTER" contentDisplay="CENTER" layoutX="39.0" layoutY="690.0" prefHeight="35.0" prefWidth="206.0" textFill="RED" />
+            <Label fx:id="trayStack" alignment="CENTER" layoutX="113.0" layoutY="632.0" prefHeight="35.0" prefWidth="79.0" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Label>
+            <TextField fx:id="field" alignment="CENTER" layoutX="39.0" layoutY="670.0" prefHeight="25.0" prefWidth="206.0" promptText="Please insert your name">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </TextField>
          </children>
          <effect>
             <DropShadow height="7.42" offsetX="3.0" offsetY="3.0" radius="5.0625" width="14.83" />
@@ -228,7 +229,7 @@
                   <Font size="39.0" />
                </font>
             </Label>
-            <TextArea editable="false" layoutX="25.0" layoutY="74.0" prefHeight="646.0" prefWidth="910.0" style="-fx-background-color: violet;" text="Ziel des Spiels ist es nun ein „Set“ bestehend aus drei Karten zu finden, wobei alle Merkmale EINE der folgende Voraussetzungen zu erfüllen haben:&#10;•&#9;Das Merkmal hat auf allen drei Karten die gleiche Ausprägung (bspw. haben alle drei Karten rote Symbole)&#10;•&#9;Das Merkmal hat auf allen drei Karten eine unterschiedliche Ausprägung (bspw. hat eine Karte ein Symbol, die zweite zwei Symbole und die dritte drei Symbole)&#10;Keine Sets sind somit alle Kombinationen aus drei Karten, bei denen genau zwei der drei Karten eine gleiche Ausprägung eines Merkmals haben. Nach dem lokalisieren eines Sets werden die entsprechenden Karten entfernt und durch drei neue Karten ersetzt.&#10;Es gibt verschiedene Spielmod. Hier kann man zwischen zwei Varianten unterscheiden:&#10;•&#9;Normaler Spielmodus: Es wird solange gespielt bis das verbleibende Kartendeck erschöpft und kein Set mehr vorhanden ist. Nach 10 Stunden wird jedoch das Spiel abgebrochen.&#10;•&#9;Zeitmodus: Es gibt eine begrenzte Zeit in der so viele Sets wie möglich gefunden werden müssen.&#10;&#10;Falls kein Set unter den 12 aufgedeckten Karten zu finden ist, werden die Karten auf den Ablagestapel gelegt und es kommen die nächsten 12 Karten des Decks  ins Spiel.&#10;Symbole:" wrapText="true">
+            <TextArea editable="false" layoutX="25.0" layoutY="74.0" prefHeight="646.0" prefWidth="910.0" style="-fx-background-color: violet;" text="Ziel des Spiels ist es nun ein „Set“ bestehend aus drei Karten zu finden, wobei alle Merkmale EINE der folgende Voraussetzungen zu erfüllen haben:&#10;•&#9;Das Merkmal hat auf allen drei Karten die gleiche Ausprägung (bspw. haben alle drei Karten rote Symbole)&#10;•&#9;Das Merkmal hat auf allen drei Karten eine unterschiedliche Ausprägung (bspw. hat eine Karte ein Symbol, die zweite zwei Symbole und die dritte drei Symbole)&#10;Keine Sets sind somit alle Kombinationen aus drei Karten, bei denen genau zwei der drei Karten eine gleiche Ausprägung eines Merkmals haben. Nach dem lokalisieren eines Sets werden die entsprechenden Karten entfernt und durch drei neue Karten ersetzt.&#10;Es gibt verschiedene Spielmodi. Hier kann man zwischen zwei Varianten unterscheiden:&#10;•&#9;Normaler Spielmodus: Es wird solange gespielt bis das verbleibende Kartendeck erschöpft und kein Set mehr vorhanden ist. Nach 10 Stunden wird jedoch das Spiel abgebrochen.&#10;•&#9;Zeitmodus: Es gibt eine begrenzte Zeit in der so viele Sets wie möglich gefunden werden müssen.&#10;&#10;Falls kein Set unter den 12 aufgedeckten Karten zu finden ist, werden die Karten auf den Ablagestapel gelegt und es kommen die nächsten 12 Karten des Decks  ins Spiel.&#10;Symbole:" wrapText="true">
                <font>
                   <Font name="Calibri" size="21.0" />
                </font>

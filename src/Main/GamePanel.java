@@ -184,8 +184,6 @@ public class GamePanel {
     @FXML
     Button gameOverBackToMenu;
 
-    ScoreBoard sb = new ScoreBoard();
-
     public void loadRulesImage() throws Exception {
         ii1.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/Card_backsite.png")), null));
         ii2.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/recycle_bin.png")), null));
@@ -233,12 +231,17 @@ public class GamePanel {
 
                                 foundSets++; // Gefundene Sets um 1 nach oben
                                 foundSetsLabel.setText("" + foundSets);
-                                if ((300 - scoreInt) > 0) {
-                                    score = score + (((300 - scoreInt) * (300 - scoreInt)) / (900 * Integer.parseInt(possibleSetsLabel.getText())));
-                                   // System.out.println(Integer.parseInt(possibleSetsLabel.getText()));
-                                    g.getExampleSet().clear();
-                                    if (sorted) {
-                                        score = (score * 3) / 4;
+                                score += 100;
+                                System.out.println(scoreInt);
+                                if (((((300 - scoreInt) * (300 - scoreInt)) / (900 * Integer.parseInt(possibleSetsLabel.getText())))) > 0) {
+                                    if (scoreInt < 300) {
+                                        score = score + (((300 - scoreInt) * (300 - scoreInt)) / (900 * Integer.parseInt(possibleSetsLabel.getText())));
+                                        // System.out.println(Integer.parseInt(possibleSetsLabel.getText()));
+
+                                        g.getExampleSet().clear();
+                                        if (sorted) {
+                                            score = (score * 3) / 4;//todo
+                                        }
                                     }
                                 }
                                 scoreLabel.setText(score + "");
@@ -422,7 +425,7 @@ public class GamePanel {
             cardDeck.put(imageView, c);
             if (!cardset.isSelected()) {
                 imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c.toString() + ".png")), null));
-            }else {
+            } else {
                 imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/CardsBlack/" + c.toString() + ".png")), null));
             }
             counter++;
@@ -468,7 +471,7 @@ public class GamePanel {
                     try {
                         if (!cardset.isSelected()) {
                             imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Cards/" + c.toString() + ".png")), null));
-                        }else {
+                        } else {
                             imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/CardsBlack/" + c.toString() + ".png")), null));
 
                         }
@@ -502,6 +505,8 @@ public class GamePanel {
         }
 
     }
+
+    boolean isWrittenInData = false; //todo
 
     public void setEndScreen() {
         try {
@@ -582,6 +587,7 @@ public class GamePanel {
             boxFarbe.getItems().add("Rot");
             boxFarbe.getItems().add("Grün");
             boxFarbe.getItems().add("Blau");
+            boxFarbe.getItems().add("Schwarz");
             sceneBoolean = false;
         }
         String rot = "-fx-background-color: #86001e";
@@ -600,6 +606,10 @@ public class GamePanel {
         } else if (boxFarbe.getValue().equals("Default")) {
             //#35374C default
             setBackgroundColor("-fx-background-color: #35374C", "-fx-background-color: #35374C; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
+
+        } else if (boxFarbe.getValue().equals("Schwarz")) {
+            //#35374C default
+            setBackgroundColor("-fx-background-color: #000000", "-fx-background-color: #000000; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4");
 
         }
 
@@ -663,16 +673,13 @@ public class GamePanel {
                         timeLabel.setText(timer);
                     } else {
                         String normal = c.start();
-                        if (normal.equals("50:00:00")) {
+                        if (normal.equals("50:00:00")) { //Spiel wird nach 50 Stunden abgebrochen, wenn das Spiel noch nicht beendet ist
                             try {
                                 AnchorPane pane = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
                                 window.getChildren().setAll(pane);
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
-
-
-                            //setEndScreen();
                         }
                         timeLabel.setText(normal);
                     }

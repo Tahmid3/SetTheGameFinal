@@ -644,8 +644,13 @@ public class GamePanel {
 
     public void setLabels() throws IOException {
         remainingCardsView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/Card_backsite.png")), null));
-        trayStackView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/recycle_bin.png")), null));
-        skipView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/skip_image.png")), null));
+        if (boxFarbe.getValue().equals("Schwarz")) {
+            skipView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/skip_imageW.png")), null));
+            trayStackView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/recycle_binW.png")), null));
+        } else {
+            skipView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/skip_image.png")), null));
+            trayStackView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new File("assets/Symbols/recycle_bin.png")), null));
+        }
         Timer timer = new Timer();
         Clock c = new Clock();
         for (ImageView iv : cardDeck.keySet()) {

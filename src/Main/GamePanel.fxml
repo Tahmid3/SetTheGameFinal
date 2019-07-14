@@ -20,7 +20,7 @@
       <Pane fx:id="leftMenu" layoutX="-1.0" prefHeight="911.0" prefWidth="284.0" style="-fx-background-color: #35374C;">
          <children>
             <Separator layoutX="42.0" layoutY="661.0" prefWidth="200.0" style="-fx-background-color: #F4F4F6;" />
-            <Pane fx:id="sideMenu" layoutX="42.0" layoutY="85.0" prefHeight="630.0" prefWidth="200.0" style="-fx-background-color: #35375f;" visible="false">
+            <Pane fx:id="sideMenu" layoutX="42.0" layoutY="85.0" prefHeight="630.0" prefWidth="200.0" style="-fx-background-color: #35375f;">
                <children>
                   <Separator layoutY="-1.0" prefWidth="200.0" />
                   <Separator layoutY="-1.0" orientation="VERTICAL" prefHeight="630.0" prefWidth="0.0" style="-fx-background-color: #ffffff;" />
@@ -99,7 +99,7 @@
                         <Font name="System Bold" size="17.0" />
                      </font>
                   </Label>
-                  <ImageView fx:id="skipView" fitHeight="71.0" fitWidth="79.0" layoutX="126.0" layoutY="530.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="skipView" fitHeight="42.0" fitWidth="41.0" layoutX="148.0" layoutY="546.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" />
                </children>
             </Pane>
             <Button fx:id="start" alignment="CENTER" contentDisplay="CENTER" layoutX="63.0" layoutY="747.0" mnemonicParsing="false" onAction="#createFirstDeck" prefHeight="65.0" prefWidth="150.0" style="-fx-background-color: #35374C; -fx-border-color: #F4F4F6; -fx-border-radius: 100; -fx-border-width: 4;" text="START" textFill="WHITE">
@@ -164,7 +164,7 @@
                   <Font name="System Bold" size="17.0" />
                </font>
             </Label>
-            <TextField fx:id="field" alignment="CENTER" layoutX="39.0" layoutY="670.0" prefHeight="25.0" prefWidth="206.0" promptText="Please insert your name">
+            <TextField fx:id="field" alignment="CENTER" layoutX="39.0" layoutY="671.0" prefHeight="25.0" prefWidth="206.0" promptText="Please insert your name">
                <font>
                   <Font size="13.0" />
                </font>

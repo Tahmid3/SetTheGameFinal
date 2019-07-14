@@ -6,3 +6,6 @@ Javafx 12 muss in den Project Structures hinzugefügt werden. Im Ordner Resource
 - javafx
 - evlt. kotlin stdlib
 - Bildschirmauflösung auf 100% damit man das gesamte Spielfenster sehen kann
+
+Hier ein Kontakt für Fragen:
+- shibly.tahmid@gmail.com

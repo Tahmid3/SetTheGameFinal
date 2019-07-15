@@ -45,7 +45,7 @@ public class GamePanel {
     boolean sorted = false;
     boolean skipClickable = true;
     boolean onEnterBoolean = true;
-
+    boolean isWrittenInData = false;
     @FXML
     Pane endPane;
     @FXML
@@ -347,6 +347,7 @@ public class GamePanel {
     public void onClickBackToMenu() throws Exception {
         AnchorPane pane = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
         window.getChildren().setAll(pane);
+        isWrittenInData = false;
     }
 
     public void refreshGamePanel() throws IOException {
@@ -506,13 +507,15 @@ public class GamePanel {
 
     }
 
-    boolean isWrittenInData = false; //todo
 
     public void setEndScreen() {
-        try {
-            writeData();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!isWrittenInData) {
+            try {
+                writeData();
+                isWrittenInData = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         endPane.setVisible(true);
         skip.setVisible(false);
